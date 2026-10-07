@@ -1,0 +1,223 @@
+---
+title: Agent Tools That Actually Ship
+description:
+  Notes from building tool-calling agents in production — the loop matters more
+  than the tool list, evals beat vibes, and every tool needs a failure mode.
+date: 2026-02-18
+tags: ["AI Agents", TypeScript, Tooling]
+featured: true
+---
+
+Most "agent" demos die at the same place. The demo works, the tool list looks
+impressive, and then a real user asks something slightly off-script and the
+whole thing unravels — three tool calls deep, with no record of why.
+
+I have shipped agentic systems both ways. The ones that survived in production
+were not the ones with the cleverest prompts. They were the ones with a boring,
+inspectable loop, tools shaped like ordinary functions, and evals that ran in CI
+before anyone merged a prompt change.
+
+This is the version of those lessons I wish I had written first.
+
+## Start with the loop, not the tools
+
+The tool list is the part everyone demos. It is also the least important part.
+A registry of forty well-described functions can still fail constantly if the
+loop that calls them has no budget, no ceiling, and no way to give up.
+
+Mine looks roughly like this:
+
+```ts title="loop.ts" showLineNumbers
+type Step =
+  | { kind: "tool-call"; name: string; input: unknown }
+  | { kind: "final"; answer: string };
+
+export async function run(
+  goal: string,
+  tools: ToolRegistry,
+  limits: { maxSteps: number; deadlineMs: number },
+): Promise<Step[]> {
+  const started = Date.now();
+  const trace: Step[] = [];
+
+  for (let step = 0; step < limits.maxSteps; step += 1) {
+    if (Date.now() - started > limits.deadlineMs) {
+      throw new AgentBudgetError(`gave up after ${step} steps`);
+    }
+
+    const choice = await decide(goal, trace, tools.describe());
+    trace.push(choice);
+
+    if (choice.kind === "final") return trace;
+
+    const tool = tools.get(choice.name);
+    if (!tool) {
+      // A hallucinated tool name is a normal event, not an exception.
+      trace.push({ kind: "tool-error", reason: "unknown tool" });
+      continue;
+    }
+
+    const result = await tool.run(choice.input);
+    trace.push(result);
+  }
+
+  throw new AgentBudgetError("step budget exhausted");
+}
+```
+
+Three details in that loop matter more than the surrounding framework:
+
+1. **The budget is a hard stop, not a suggestion.** `maxSteps` and a wall-clock
+   deadline are both enforced. An agent that will run "just one more" step is an
+   agent that will eventually run all of them.
+2. **Unknown tool names are a branch, not a crash.** Models hallucinate function
+   names constantly. If that throws, you get an incident. If it appends a trace
+   entry, you get a datapoint.
+3. **The trace is the return value.** Not a log line. Not a debug flag. The
+   actual output. If I cannot reconstruct why the agent did what it did after
+   the fact, I do not have a system — I have a novelty.
+
+> The trace is the product. The model is a component you swap out.
+
+## Tools should be boring
+
+The single highest-leverage change I made was refusing to let tools be clever.
+Every tool is a plain async function with a typed input, a typed output, and a
+documented failure mode. No tool calls another tool. No tool holds state between
+calls. No tool knows it is inside an agent.
+
+That constraint buys a lot:
+
+- **Replay.** A trace is a list of `(name, input)` pairs. You can replay it
+  against a stub registry in a unit test and assert the exact sequence.
+- **Swap.** Because tools are ordinary functions, you can replace the dangerous
+  one with a no-op in an eval run and measure how much the answer degrades.
+- **Test.** `expect(tool.run(input)).resolves.toMatchObject(expected)` — no
+  model in the loop, no flakiness, milliseconds per assertion.
+
+TypeScript earns its keep here, because the alternative is a `Record<string,
+Function>` and the compiler stops helping you the moment a tool's input shape
+drifts:
+
+```ts title="registry.ts" showLineNumbers
+export type ToolResult =
+  | { ok: true; value: unknown }
+  | { ok: false; error: string; retryable: boolean };
+
+export interface Tool<In, Out> {
+  readonly description: string;
+  /** JSON Schema shape published to the model. */
+  readonly schema: Record<string, unknown>;
+  run(input: In): Promise<ToolResult>;
+}
+
+export class ToolRegistry {
+  private readonly tools = new Map<string, Tool<never, unknown>>();
+
+  register(name: string, tool: Tool<never, unknown>): this {
+    this.tools.set(name, tool);
+    return this;
+  }
+
+  describe(): Array<{ name: string; description: string; schema: unknown }> {
+    return [...this.tools].map(([name, tool]) => ({
+      name,
+      description: tool.description,
+      schema: tool.schema,
+    }));
+  }
+
+  async call(name: string, raw: unknown): Promise<ToolResult> {
+    const tool = this.tools.get(name);
+    if (!tool)
+      return { ok: false, error: `unknown tool: ${name}`, retryable: false };
+    return tool.run(raw as never);
+  }
+}
+```
+
+Notice that `retryable` is part of the result type. That single field is what
+lets the loop decide whether to continue, ask the user, or stop — instead of
+blindly retrying a validation error four more times and burning the budget.
+
+## Evals before vibes
+
+"I tried it and it seemed better" is not a feedback loop. It is a mood. Every
+prompt or tool-description change I have shipped without an eval, I have later
+shipped back.
+
+The eval that earned its keep was embarrassingly simple — a set of real
+requests, a set of rubrics, and a pass rate in CI:
+
+```python title="eval_runner.py"
+import json
+import statistics
+from pathlib import Path
+
+CASES = json.loads(Path("evals/cases.json").read_text())
+
+
+def score(result: dict, rubric: dict) -> bool:
+    if rubric["type"] == "tool_sequence":
+        return result["tool_sequence"] == rubric["expected"]
+    if rubric["type"] == "mentions":
+        return all(term.lower() in result["answer"].lower() for term in rubric["terms"])
+    if rubric["type"] == "no_hallucinated_tools":
+        return all(name in result["available_tools"] for name in result["tool_sequence"])
+    raise ValueError(rubric["type"])
+
+
+def run(agent, threshold: float = 0.9) -> bool:
+    passes = []
+    for case in CASES:
+        result = agent(case["request"])
+        passes.append(all(score(result, r) for r in case["rubrics"]))
+
+    rate = statistics.mean(passes)
+    print(f"pass rate: {rate:.0%} over {len(passes)} cases")
+    return rate >= threshold
+```
+
+It takes fifteen minutes to write and it has blocked more bad prompt changes
+than any amount of manual testing. The threshold is deliberately high and
+non-negotiable, because an eval you let slide is an eval you have deleted.
+
+Two rules I hold to:
+
+- **Rubrics check behaviour, not wording.** "Called `search_docs` before
+  answering" survives a model upgrade. "Said 'I'd be happy to'" does not.
+- **Add a case every time the agent fails in the wild.** That is the only
+  growth mechanism that has ever reliably worked for me.
+
+## Guardrails are a product feature
+
+Every guardrail I added has a cost, and I make that trade deliberately now.
+The list that survived contact with real users:
+
+| Guardrail                      | What it prevents                                 | What it costs                         |
+| ------------------------------ | ------------------------------------------------ | ------------------------------------- |
+| Tool allowlist                 | One prompt injection reaching a destructive tool | Occasional refusal on legitimate work |
+| Step + time budget             | Runaway loops and surprise invoices              | Truncation on genuinely hard tasks    |
+| Idempotency keys on writes     | Duplicate side effects on retry                  | A little plumbing per write tool      |
+| Typed results with `retryable` | Retry storms on validation errors                | Verbose signatures                    |
+
+The idempotency one is worth calling out. Once a tool can write — send an email,
+open a pull request, push a transaction — a retry is no longer free. Give every
+write tool an idempotency key derived from `(tool, input)`, and pass it all the
+way down to the API that understands it. I learned this the expensive way, and
+the incident report was shorter than the code that fixed it.
+
+## What I would do differently
+
+If I were starting over, three things:
+
+1. **Write the eval on day one**, even with six cases. The first version will
+   be wrong; being wrong early is cheap.
+2. **Log the full trace from the first deploy.** Storage is a rounding error
+   compared to reconstructing a run you cannot see.
+3. **Ship boring tools before clever orchestration.** Every fancy planner I
+   added got deleted. Every plain tool with a typed result survived.
+
+The agentic part is genuinely useful. But the reason my systems work is that
+the parts around it are boring enough to debug at 2am, and that is the whole
+secret.

@@ -1,0 +1,132 @@
+---
+title: Six Signals I Watch Before Entering a Trade
+description:
+  The checklist I run before any position — liquidity, structure, and a
+  position size I can survive being wrong about.
+date: 2026-01-09
+tags: ["Trading", "Web3", "Mindset"]
+featured: false
+---
+
+Every trade I took without a checklist was a trade I was really taking on
+emotion. Not always — sometimes the setup was genuinely clean — but the process
+was mine, not the market's, and that is enough to lose money slowly.
+
+This is the checklist. It is not exhaustive, it is not clever, and after two
+years of revisions it fits on one screen.
+
+## 1. Where is the liquidity?
+
+Not "is there volume" — where is it, and is it real.
+
+On-chain this is concrete: a few hundred thousand dollars of depth inside a
+1% band means my exit is a haircut, not a market order. Pool depth that appeared
+two hours ago and was seeded by one wallet is a liquidity mirage. If I cannot
+name the pools or venues I am trading into, I do not have an edge, I have a
+position.
+
+On a central exchange the same question, different vocabulary: how thin is the
+book between here and my stop?
+
+> If I cannot exit without moving the price, I am not trading — I am donating.
+
+## 2. Is the structure aligned?
+
+Structure is boring on purpose. I want to know:
+
+- Which timeframe am I trading on, and am I being honest about it?
+- Where is the last swing high and the last swing low?
+- Am I entering into a level that has already been respected twice, or one that
+  is only respected in my imagination?
+
+The failure mode here is not bad analysis. It is _unfalsifiable_ analysis — a
+setup that would be invalidated by evidence but is never actually triggered,
+because no evidence ever quite counts. When I catch myself unable to write down
+the exact price that would prove me wrong, I skip the trade.
+
+## 3. What is my invalidation, in price?
+
+One number. Written before the entry, not after the loss.
+
+This is the least glamorous item on the list and it is the one that saves the
+account. If the invalidation is "if it reverts", that is not an invalidation —
+that is a hope. If it is "below the swing low at 0.41", then the trade has a
+shape and I can size it.
+
+## 4. How big is the position, really?
+
+Position size is the _only_ variable I fully control on any given trade. Not
+the entry, not the exit, not the market. So it gets the attention.
+
+I work in R-multiples rather than percentages, because it forces the arithmetic
+that matters — how much am I losing if this is wrong, expressed in units of the
+risk I already accepted.
+
+```python title="sizing.py" showLineNumbers
+def size_position(
+    equity: float,
+    risk_pct: float,
+    entry: float,
+    invalidation: float,
+    fee_pct: float = 0.001,
+    buffer_pct: float = 0.25,
+) -> tuple[float, float]:
+    """Return (position_units, risk_cash). `invalidation` must be on the
+    losing side of `entry`; we widen the stop by `buffer_pct` to survive
+    spread and wick."""
+    if (invalidation - entry) * (1 if entry > invalidation else -1) <= 0:
+        raise ValueError("invalidation is not on the losing side of entry")
+
+    risk_cash = equity * (risk_pct / 100)
+    stop_distance = abs(entry - invalidation) * (1 + buffer_pct / 100)
+    units = risk_cash / (stop_distance * (1 + fee_pct))
+    return units, risk_cash
+```
+
+The buffer is doing real work. A stop placed exactly at the swing low gets
+swept and then recovers, which is functionally identical to having no stop when
+you measure performance by trade count.
+
+| Risk per trade | Expectancy needed to break even | What it feels like                      |
+| -------------- | ------------------------------- | --------------------------------------- |
+| 0.5%           | Very high                       | Hard to notice, easy to honour          |
+| 1%             | Moderate                        | Sustainable over months                 |
+| 2%             | Low                             | Survivable, but variance starts showing |
+| 5%             | Almost none                     | One bad week ends the run               |
+
+The numbers are not advice — they are a reminder that risk per trade is a
+_choice about variance_, not a measure of confidence. Confidence is exactly the
+thing I am least qualified to assess about my own trade.
+
+## 5. Does the setup survive being wrong?
+
+Before I enter, I write the single most likely reason this fails. Then I check
+whether that reason is already priced in.
+
+Most of the time it is not. That is the trade. Occasionally it _is_ priced,
+and then the correct action is to pass, even though everything else lined up.
+FOMO is not a signal; it is a feeling with a very poor hit rate.
+
+## 6. Can I walk away?
+
+The last one is about me, not the market.
+
+Is there a level where I take the whole thing off regardless of how it looks?
+Can I close the chart and come back to it in four hours without refreshing?
+Do I have something else scheduled that pulls my attention away?
+
+A setup that requires me to watch a candle-by-candle move is a setup I cannot
+size honestly, because my attention is now a position risk I never priced.
+
+## Why this list exists
+
+I wrote it down after losing a month of gains to three trades that each would
+have been skipped by the list above. Not by much — each one only needed two
+items to fail. But they were correlated, in the same direction, on the same
+day, which is the part that actually hurt.
+
+Trading is the only thing I do where I can be wrong for a long time and still
+call it "the process". That makes process-building the entire game, and the
+checklist is just the process written down where I cannot quietly edit it.
+
+Boring checklists survive. Gut feel, in my experience, does not.

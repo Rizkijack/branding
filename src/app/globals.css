@@ -1,0 +1,554 @@
+@import "tailwindcss";
+
+/* Tailwind v4 loads plugins with `@plugin`, not `@import`. */
+@plugin "@tailwindcss/typography";
+
+/* ==========================================================================
+   Design tokens — raw values
+   Light is the default theme. Dark is applied by next-themes via [data-theme]
+   (and by the pre-hydration script fallback in the inline theme script).
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --bg: #f8f7ff;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f2f0fb;
+  --surface-3: #e9e6f8;
+
+  /* Text — contrast-checked against --bg (light) */
+  --fg: #1c1c1c; /* 15.8:1 on --bg */
+  --fg-muted: #565473; /* 6.4:1  on --bg */
+  --fg-subtle: #6f6c8a; /* 4.6:1  on --bg */
+
+  /* Lines & rings */
+  --line: #e3dff5;
+  --line-strong: #cfc7ee;
+  --ring: #8a5cf6;
+
+  /* Iridescent brand palette */
+  --brand-purple: #8a5cf6;
+  --brand-blue: #627eea;
+  --brand-indigo: #5b4ce0;
+  --brand-pink: #f472b6;
+  --brand-orange: #ff9f5a;
+  --brand-amber: #f7c948;
+  --brand-teal: #16a6a1;
+
+  /* Gradient stop ramps (shared by text/borders/glows) */
+  --grad-hero: linear-gradient(
+    100deg,
+    #8a5cf6 0%,
+    #627eea 34%,
+    #f472b6 66%,
+    #ff9f5a 100%
+  );
+  --grad-soft: linear-gradient(100deg, #8a5cf6 0%, #627eea 50%, #16a6a1 100%);
+  --grad-surface: linear-gradient(
+    180deg,
+    rgb(255 255 255 / 0.92) 0%,
+    rgb(255 255 255 / 0.72) 100%
+  );
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgb(28 28 28 / 0.05), 0 2px 6px rgb(28 28 28 / 0.04);
+  --shadow-md:
+    0 6px 16px rgb(28 28 28 / 0.06), 0 12px 32px rgb(28 28 28 / 0.06);
+  --shadow-lg:
+    0 12px 28px rgb(28 28 28 / 0.08), 0 28px 64px rgb(28 28 28 / 0.1);
+  --shadow-glow:
+    0 0 0 1px rgb(138 92 246 / 0.18), 0 18px 60px -12px rgb(138 92 246 / 0.45);
+
+  /* Layout */
+  --nav-h: 4rem;
+  --radius-card: 1.75rem; /* 28px */
+  --radius-btn: 9999px;
+}
+
+.dark {
+  --bg: #0b0b14;
+  --bg-elevated: #12121f;
+  --surface: #12121f;
+  --surface-2: #1a1a2b;
+  --surface-3: #232338;
+
+  --fg: #f5f5f7; /* 16.4:1 on --bg */
+  --fg-muted: #b0adc9; /* 8.1:1  on --bg */
+  --fg-subtle: #8f8cae; /* 5.2:1  on --bg */
+
+  --line: #2a2a42;
+  --line-strong: #3a3a5c;
+  --ring: #a78bfa;
+
+  --brand-purple: #a78bfa;
+  --brand-blue: #8b9ff5;
+  --brand-indigo: #8b7cf0;
+  --brand-pink: #f9a8d4;
+  --brand-orange: #ffb47f;
+  --brand-amber: #ffd97a;
+  --brand-teal: #4dd4c9;
+
+  --grad-surface: linear-gradient(
+    180deg,
+    rgb(24 24 40 / 0.92) 0%,
+    rgb(16 16 28 / 0.72) 100%
+  );
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5), 0 2px 6px rgb(0 0 0 / 0.35);
+  --shadow-md: 0 6px 16px rgb(0 0 0 / 0.45), 0 12px 32px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 12px 28px rgb(0 0 0 / 0.5), 0 28px 64px rgb(0 0 0 / 0.55);
+  --shadow-glow:
+    0 0 0 1px rgb(167 139 250 / 0.25), 0 18px 60px -12px rgb(138 92 246 / 0.5);
+}
+
+/* ==========================================================================
+   Tailwind theme bridge — exposes tokens as utilities
+   (bg-surface, text-fg-muted, border-line, rounded-card, shadow-glow, …)
+   ========================================================================== */
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ring: var(--ring);
+
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-indigo: var(--brand-indigo);
+  --color-brand-pink: var(--brand-pink);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-amber: var(--brand-amber);
+  --color-brand-teal: var(--brand-teal);
+
+  --radius-card: var(--radius-card);
+  --radius-pill: var(--radius-btn);
+  --radius-xl2: 1.25rem;
+  --radius-xl3: 1.75rem;
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-glow: var(--shadow-glow);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    var(--font-grotesk), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-mono-jet), ui-monospace, SFMono-Regular, monospace;
+
+  --breakpoint-xs: 26rem;
+
+  --animate-float-slow: float-slow 9s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-spin-slow: spin 26s linear infinite;
+  --animate-spin-slower: spin 40s linear infinite reverse;
+  --animate-pulse-glow: pulse-glow 4.5s ease-in-out infinite;
+  --animate-drift: drift 18s ease-in-out infinite alternate;
+  --animate-shimmer: shimmer 2.2s linear infinite;
+  --animate-indeterminate: indeterminate 1.4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.06);
+  }
+}
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, -4%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-3%, 3%, 0) scale(0.96);
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%) scaleX(0.4);
+  }
+  50% {
+    transform: translateX(10%) scaleX(0.7);
+  }
+  100% {
+    transform: translateX(100%) scaleX(0.4);
+  }
+}
+/* Typing caret for the hero tagline. steps() gives a hard blink, not a fade. */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Anchor targets clear the sticky navbar */
+    scroll-padding-top: calc(var(--nav-h) + 1.5rem);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Mesh blobs are fixed-position and huge; don't let them create scrollbars */
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.028em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Consistent, high-contrast focus ring in both themes */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Remove the WebKit focus ring so we only show ours */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--brand-purple) 30%, transparent);
+    color: var(--fg);
+  }
+
+  /* Dark-mode scrollbar */
+  .dark ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: var(--surface-3);
+    border-radius: 9999px;
+    border: 2px solid var(--bg);
+  }
+}
+
+/* ==========================================================================
+   Component utilities
+   ========================================================================== */
+
+/* Iridescent gradient text. Works on any element, clipped to the glyphs. */
+@utility text-gradient {
+  background-image: var(--grad-hero);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* Keeps descenders from being clipped by background-clip */
+  padding-bottom: 0.06em;
+}
+
+@utility text-gradient-soft {
+  background-image: var(--grad-soft);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 1px iridescent border via double background (no layout shift, no extra DOM) */
+@utility border-gradient {
+  position: relative;
+  isolation: isolate;
+}
+@utility border-gradient-after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--grad-hero);
+  /* Punch the middle out so only the 1px rim shows */
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.42;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Shared glassy card surface */
+@utility glass {
+  background-image: var(--grad-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Animated hairline divider */
+@utility divider-gradient {
+  height: 1px;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--brand-purple) 55%, transparent),
+    color-mix(in oklab, var(--brand-blue) 55%, transparent),
+    color-mix(in oklab, var(--brand-pink) 45%, transparent),
+    transparent
+  );
+}
+
+/* Shimmering skeleton block used by loading.tsx */
+@utility skeleton {
+  background-image: linear-gradient(
+    90deg,
+    var(--surface-2) 0%,
+    var(--surface-3) 45%,
+    var(--surface-2) 90%
+  );
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+/* Route-change progress bar */
+@utility progress-bar {
+  background-image: var(--grad-hero);
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+  transform-origin: left center;
+}
+
+/* Content column shared by every page section */
+@utility container-page {
+  width: 100%;
+  max-width: 76rem; /* 1216px — editorial measure */
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (min-width: 48rem) {
+    padding-inline: 2rem;
+  }
+  @media (min-width: 80rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* ==========================================================================
+   Prose (blog) tuning — sits on top of @tailwindcss/typography
+   ========================================================================== */
+
+.prose-post {
+  --tw-prose-body: var(--fg-muted);
+  --tw-prose-headings: var(--fg);
+  --tw-prose-links: var(--brand-purple);
+  --tw-prose-bold: var(--fg);
+  --tw-prose-quotes: var(--fg);
+  --tw-prose-code: var(--fg);
+  --tw-prose-hr: var(--line);
+  --tw-prose-quote-borders: var(--brand-purple);
+  --tw-prose-counters: var(--fg-subtle);
+  --tw-prose-bullets: var(--line-strong);
+  --tw-prose-hr: var(--line);
+}
+
+/* rehype-pretty-code output — themed entirely in CSS (zero runtime cost) */
+[data-rehype-pretty-code-figure] pre {
+  background-color: var(--surface-2) !important;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl2) !important;
+  padding: 1.15rem 0 !important;
+  overflow-x: auto;
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+[data-rehype-pretty-code-figure] code {
+  display: grid;
+  font-family: var(--font-mono-jet), ui-monospace, monospace;
+  counter-reset: line;
+}
+
+[data-rehype-pretty-code-figure] code > .line {
+  padding-inline: 1.25rem;
+  border-left: 2px solid transparent;
+}
+
+[data-rehype-pretty-code-figure] code > .line:hover {
+  background: color-mix(in oklab, var(--brand-purple) 7%, transparent);
+  border-left-color: var(--brand-purple);
+}
+
+/* Line numbers — `showLineNumbers` enables this class */
+[data-line-numbers] {
+  counter-reset: line;
+}
+[data-line-numbers] > .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1.6rem;
+  margin-right: 1.15rem;
+  text-align: right;
+  color: var(--fg-subtle);
+  opacity: 0.6;
+}
+
+/* -------------------------------------------------------------------------
+ * Syntax highlighting (rehype-pretty-code + shiki, dual theme)
+ * -------------------------------------------------------------------------
+ * With `theme: { light, dark }` shiki emits BOTH palettes as CSS custom
+ * properties on every token, e.g.:
+ *
+ *   <span style="--shiki-light:#D73A49;--shiki-dark:#F47067">type</span>
+ *
+ * Shiki deliberately does not set `color` itself, because it cannot know which
+ * theme is active. These two rules are what actually paint the tokens: light by
+ * default, `--shiki-dark` when `.dark` is on <html>.
+ *
+ * Without this mapping the spans inherit the body colour and code renders as
+ * one flat colour — the variables alone do nothing.
+ * ---------------------------------------------------------------------- */
+
+[data-rehype-pretty-code-figure] code span[style*="--shiki-light"] {
+  color: var(--shiki-light);
+}
+
+.dark [data-rehype-pretty-code-figure] code span[style*="--shiki-light"] {
+  color: var(--shiki-dark);
+}
+
+/**
+ * Fallback for the rare token shiki gives a single (non-dual) theme value.
+ * `keepBackground: false` means shiki never emits a background, so this only
+ * ever sets the foreground.
+ */
+[data-rehype-pretty-code-figure]
+  code
+  span[style*="--shiki"]:not([style*="--shiki-light"]) {
+  color: var(--shiki-default, inherit);
+}
+
+[data-highlighted-line] {
+  background-color: color-mix(in oklab, var(--brand-purple) 12%, transparent);
+}
+
+[data-rehype-pretty-code-title] {
+  font-family: var(--font-mono-jet), ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  background-color: var(--surface-3);
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: var(--radius-xl2) var(--radius-xl2) 0 0;
+  padding: 0.5rem 1.1rem;
+  font-weight: 500;
+}
+[data-rehype-pretty-code-title] + pre {
+  margin-top: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+code[data-line-numbers] > [data-highlighted-line] {
+  background-color: color-mix(in oklab, var(--brand-purple) 14%, transparent);
+}
+
+/* Inline code inside prose (not inside a code fence) */
+.prose-post :not(pre) > code {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  padding: 0.12em 0.4em;
+  border-radius: 0.4rem;
+  font-size: 0.87em;
+  font-weight: 500;
+  color: var(--brand-purple);
+}
+.prose-post :not(pre) > code::before,
+.prose-post :not(pre) > code::after {
+  content: none;
+}
+
+/* ==========================================================================
+   Reduced motion — honour the OS setting everywhere
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
