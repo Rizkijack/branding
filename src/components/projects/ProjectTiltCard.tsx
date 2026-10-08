@@ -70,6 +70,10 @@ export function ProjectTiltCard({
       // the horizontal. Inverted so the card tilts *toward* the pointer.
       el.style.transform = `perspective(900px) rotateX(${-py * MAX_TILT}deg) rotateY(${px * MAX_TILT}deg) translateZ(${LIFT}px)`;
 
+      // Promote to a compositor layer only while a pointer is on the card, so
+      // the grid does not reserve one layer per card at rest.
+      el.style.willChange = "transform";
+
       if (reportFocus) setFocusedProject(project.slug);
     },
     [project.slug, reportFocus, setFocusedProject],
@@ -83,6 +87,9 @@ export function ProjectTiltCard({
     el.style.transform =
       "perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0px)";
 
+    // Drop the compositor layer once the card is back at rest.
+    el.style.willChange = "";
+
     if (reportFocus) setFocusedProject(null);
   }, [reportFocus, setFocusedProject]);
 
@@ -95,9 +102,6 @@ export function ProjectTiltCard({
         // A transform-style of `preserve-3d` is not needed since the tilt is a
         // single-element transform; `flat` (the default) is cheaper.
         transformStyle: "flat",
-        // `will-change` is only set on hover to avoid permanently reserving a
-        // compositor layer for every card in the grid.
-        willChange: "transform",
       }}
       className={cn(
         // The transition is what turns a jump into a tilt. `transform` only —

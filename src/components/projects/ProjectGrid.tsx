@@ -26,7 +26,7 @@ import {
 } from "framer-motion";
 import { useMemo, useState } from "react";
 
-import { ProjectCard } from "@/components/projects/ProjectCard";
+import { ProjectTiltCard } from "@/components/projects/ProjectTiltCard";
 import {
   ProjectFilter,
   filterLabel,
@@ -125,7 +125,11 @@ export function ProjectGrid({ projects, tags }: ProjectGridProps) {
                 exit="exit"
                 className="flex"
               >
-                <ProjectCard project={project} />
+                {/* `ProjectTiltCard` adds a pointer-tracked perspective tilt. It
+                  is pure DOM (no WebGL), reports nothing to the 3D store, and
+                  detaches its listeners under reduced motion — so it stays a
+                  cheap, optional layer over the plain server-safe card. */}
+                <ProjectTiltCard project={project} className="h-full w-full" />
               </motion.li>
             ))}
           </AnimatePresence>

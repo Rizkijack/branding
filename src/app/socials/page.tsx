@@ -5,7 +5,9 @@
  * Server component. The whole page is derived from `socials` and `profile` in
  * data/profile.ts, so adding a platform there is the only edit needed.
  *
- * The only JS on this route is <MeshBackground> and the <Reveal*> wrappers.
+ * The only JS on this route is <MeshBackground>, the <Reveal*> wrappers, and
+ * the client-side <SocialOrbit> canvas (which renders null when the 3D layer
+ * is off).
  */
 
 import type { Metadata } from "next";
@@ -20,6 +22,7 @@ import { MeshBackground } from "@/components/motion/MeshBackground";
 import { RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { CopyHandle } from "@/components/socials/CopyHandle";
 import { emailHref, SocialTable } from "@/components/socials/SocialTable";
+import { SocialOrbit } from "@/components/three/SocialOrbit";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
@@ -71,7 +74,8 @@ const elsewhere = [
 
 export default function SocialsPage() {
   const mailto = emailHref(contact.email);
-  const live = socials.filter((social) => social.url).length;
+  const liveSocials = socials.filter((social) => social.url);
+  const live = liveSocials.length;
 
   return (
     <>
@@ -113,6 +117,15 @@ export default function SocialsPage() {
               &ldquo;not configured&rdquo; is a slot waiting for a handle.
             </p>
           </header>
+
+          {/*
+            3D orbit — one faceted node per live channel around a central core.
+            Decorative and aria-hidden: the table below is the real content, so
+            keyboard and screen-reader users lose nothing. Renders null when the
+            3D layer is off, so the table stands alone. The host needs an
+            explicit height — R3F's <Canvas> fills its parent.
+          */}
+          <SocialOrbit socials={liveSocials} className="mt-8 h-56 sm:h-72" />
 
           <div className="mt-10">
             <SocialTable socials={socials} />
