@@ -31,9 +31,10 @@ function detectWebGL(): boolean {
     const gl =
       canvas.getContext("webgl2", attributes) ??
       canvas.getContext("webgl", attributes) ??
-      (canvas.getContext("experimental-webgl", attributes) as
-        | WebGLRenderingContext
-        | null);
+      (canvas.getContext(
+        "experimental-webgl",
+        attributes,
+      ) as WebGLRenderingContext | null);
 
     return !!gl && typeof gl.getParameter === "function";
   } catch {

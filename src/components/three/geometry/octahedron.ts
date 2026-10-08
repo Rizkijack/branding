@@ -170,7 +170,10 @@ export function createFacetEdgesGeometry(
   }
 
   const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
+  geometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(points, 3),
+  );
   geometry.computeBoundingSphere();
 
   return geometry;

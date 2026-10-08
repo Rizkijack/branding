@@ -46,7 +46,7 @@ import { Html } from "@react-three/drei";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 
-import { isThreeActive, useThreeStore } from "@/components/three/store";
+import { useThreeActive } from "@/components/three/use-three-environment";
 import type { TimelineEntry } from "@/data/profile";
 
 /* ------------------------------------------------------------------------- *
@@ -98,13 +98,7 @@ interface NodeProps {
   onHover: (index: number | null) => void;
 }
 
-function TimelineNode({
-  entry,
-  position,
-  index,
-  hovered,
-  onHover,
-}: NodeProps) {
+function TimelineNode({ entry, position, index, hovered, onHover }: NodeProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
   const isHovered = hovered === index;
@@ -229,11 +223,18 @@ function TimelineScene({ entries }: { entries: readonly TimelineEntry[] }) {
       return new THREE.Vector3(x, y, 0);
     });
 
-    const path = new THREE.CatmullRomCurve3(controls, false, "centripetal", 0.5);
+    const path = new THREE.CatmullRomCurve3(
+      controls,
+      false,
+      "centripetal",
+      0.5,
+    );
 
     return {
       curve: path,
-      positions: controls.map((c) => [c.x, c.y, c.z] as [number, number, number]),
+      positions: controls.map(
+        (c) => [c.x, c.y, c.z] as [number, number, number],
+      ),
     };
   }, [entries]);
 
@@ -267,7 +268,11 @@ function TimelineScene({ entries }: { entries: readonly TimelineEntry[] }) {
           lift the shadow side. Procedural — no environment map, which keeps
           this canvas cheap enough to sit on a text page. */}
       <directionalLight position={[4, 6, 5]} intensity={1.6} color="#ffffff" />
-      <directionalLight position={[-5, -3, 2]} intensity={0.5} color="#8b9ff5" />
+      <directionalLight
+        position={[-5, -3, 2]}
+        intensity={0.5}
+        color="#8b9ff5"
+      />
       <ambientLight intensity={0.35} />
 
       <lineSegments geometry={lineGeometry} material={lineMaterial} />
@@ -303,32 +308,9 @@ export interface Timeline3DProps {
  * context, which is the expensive part, so the whole subtree is dropped.
  */
 export function Timeline3D({ entries, className }: Timeline3DProps) {
-  const [mounted, setMounted] = useState(false);
-  const [active, setActive] = useState(false);
+  const active = useThreeActive();
 
-  /**
-   * The store's defaults represent "not probed yet" and only resolve on the
-   * client. Reading them during render before hydration would produce a
-   * server/client mismatch, so the decision is deferred to an effect.
-   */
-  useEffect(() => {
-    setMounted(true);
-    setActive(isThreeActive());
-
-    // Re-render only when the *predicate* flips. zustand calls this listener
-    // on every state change (including every scroll tick), so the comparison
-    // is what stops the canvas from re-mounting on a scroll burst.
-    const unsubscribe = useThreeStore.subscribe(() => {
-      setActive((current) => {
-        const next = isThreeActive();
-        return current === next ? current : next;
-      });
-    });
-
-    return unsubscribe;
-  }, []);
-
-  if (!mounted || !active || entries.length === 0) return null;
+  if (!active || entries.length === 0) return null;
 
   return (
     // `aria-hidden` + `pointer-events-none` on the wrapper: the band is
@@ -341,7 +323,11 @@ export function Timeline3D({ entries, className }: Timeline3DProps) {
       <Canvas
         camera={{ position: [0, 0.6, 8], fov: 38, near: 0.1, far: 50 }}
         dpr={[1, 1.5]}
-        gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
+        gl={{
+          alpha: true,
+          antialias: true,
+          powerPreference: "high-performance",
+        }}
         // See the file header: the hover ease is continuous, so the loop must
         // run continuously.
         frameloop="always"

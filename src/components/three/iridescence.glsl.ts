@@ -82,10 +82,7 @@ export function applyIridescence(
     shader.uniforms.uColorC = uniforms.uColorC;
 
     shader.fragmentShader = shader.fragmentShader
-      .replace(
-        "#include <common>",
-        `#include <common>\n${IRIDESCENCE_CHUNK}`,
-      )
+      .replace("#include <common>", `#include <common>\n${IRIDESCENCE_CHUNK}`)
       .replace(
         "#include <map_fragment>",
         /* glsl */ `

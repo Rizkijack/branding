@@ -31,10 +31,11 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
 
-import { useThreeEnvironment } from "@/components/three/use-three-environment";
-import { isThreeActive, useThreeStore } from "@/components/three/store";
+import {
+  useThreeActive,
+  useThreeEnvironment,
+} from "@/components/three/use-three-environment";
 
 /**
  * The real canvas. Imported through `next/dynamic` so:
@@ -82,33 +83,10 @@ export function GlobalCanvas() {
   // exactly once for the lifetime of the app.
   useThreeEnvironment();
 
-  const [mounted, setMounted] = useState(false);
-  const [active, setActive] = useState(false);
-
-  /**
-   * The store starts with `supported: false` and only flips after the client
-   * probe runs. Reading it during render before hydration would produce a
-   * server/client mismatch, so the canvas decision is deferred to an effect.
-   */
-  useEffect(() => {
-    setMounted(true);
-    setActive(isThreeActive());
-
-    // Re-render only when the *predicate* flips — not on every scroll tick.
-    // zustand calls its listener on every state change, so comparing here is
-    // what stops a scroll burst from re-rendering this component.
-    const unsubscribe = useThreeStore.subscribe(() => {
-      setActive((current) => {
-        const next = isThreeActive();
-        return current === next ? current : next;
-      });
-    });
-
-    return unsubscribe;
-  }, []);
+  const active = useThreeActive();
 
   // The probe has not run yet (or we are on the server): static gradient only.
-  if (!mounted || !active) {
+  if (!active) {
     return <StaticGradient />;
   }
 

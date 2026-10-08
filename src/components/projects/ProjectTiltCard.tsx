@@ -80,7 +80,8 @@ export function ProjectTiltCard({
     if (!el) return;
 
     // Back to flat. The transition on the wrapper animates this.
-    el.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0px)";
+    el.style.transform =
+      "perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0px)";
 
     if (reportFocus) setFocusedProject(null);
   }, [reportFocus, setFocusedProject]);

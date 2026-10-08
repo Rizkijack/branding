@@ -49,13 +49,55 @@ interface ShapeSpec {
  * keep-out zone for the hero diamond and the site's content column.
  */
 const SHAPE_LAYOUT: readonly ShapeSpec[] = [
-  { kind: "icosahedron", position: [-7.2, 3.1, -6.5], scale: 0.62, spin: [0.11, 0.17, 0.05], tint: "purple" },
-  { kind: "torus", position: [7.8, -2.4, -7.2], scale: 0.72, spin: [0.09, -0.13, 0.07], tint: "blue" },
-  { kind: "prism", position: [-6.4, -3.6, -8.5], scale: 0.68, spin: [-0.07, 0.15, 0.1], tint: "pink" },
-  { kind: "icosahedron", position: [6.1, 4.3, -9.4], scale: 0.44, spin: [0.14, 0.1, -0.08], tint: "teal" },
-  { kind: "torus", position: [-8.6, 0.4, -11.2], scale: 0.5, spin: [-0.1, 0.12, 0.09], tint: "orange" },
-  { kind: "prism", position: [9.2, 1.8, -10.6], scale: 0.4, spin: [0.08, -0.16, 0.06], tint: "purple" },
-  { kind: "icosahedron", position: [0.5, -5.2, -12.4], scale: 0.56, spin: [0.06, 0.12, 0.11], tint: "blue" },
+  {
+    kind: "icosahedron",
+    position: [-7.2, 3.1, -6.5],
+    scale: 0.62,
+    spin: [0.11, 0.17, 0.05],
+    tint: "purple",
+  },
+  {
+    kind: "torus",
+    position: [7.8, -2.4, -7.2],
+    scale: 0.72,
+    spin: [0.09, -0.13, 0.07],
+    tint: "blue",
+  },
+  {
+    kind: "prism",
+    position: [-6.4, -3.6, -8.5],
+    scale: 0.68,
+    spin: [-0.07, 0.15, 0.1],
+    tint: "pink",
+  },
+  {
+    kind: "icosahedron",
+    position: [6.1, 4.3, -9.4],
+    scale: 0.44,
+    spin: [0.14, 0.1, -0.08],
+    tint: "teal",
+  },
+  {
+    kind: "torus",
+    position: [-8.6, 0.4, -11.2],
+    scale: 0.5,
+    spin: [-0.1, 0.12, 0.09],
+    tint: "orange",
+  },
+  {
+    kind: "prism",
+    position: [9.2, 1.8, -10.6],
+    scale: 0.4,
+    spin: [0.08, -0.16, 0.06],
+    tint: "purple",
+  },
+  {
+    kind: "icosahedron",
+    position: [0.5, -5.2, -12.4],
+    scale: 0.56,
+    spin: [0.06, 0.12, 0.11],
+    tint: "blue",
+  },
 ];
 
 export interface FloatingShapesProps {
@@ -67,7 +109,8 @@ export function FloatingShapes({ count }: FloatingShapesProps) {
   const groupRef = useRef<THREE.Group>(null);
 
   const specs = useMemo(
-    () => SHAPE_LAYOUT.slice(0, Math.max(0, Math.min(count, SHAPE_LAYOUT.length))),
+    () =>
+      SHAPE_LAYOUT.slice(0, Math.max(0, Math.min(count, SHAPE_LAYOUT.length))),
     [count],
   );
 

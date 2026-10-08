@@ -121,8 +121,16 @@ export function NodeNetwork({
     let segments = 0;
 
     // Deterministic iteration order over all unique pairs.
-    for (let i = 0; i < nodePositions.length && segments < segmentLimit; i += 1) {
-      for (let j = i + 1; j < nodePositions.length && segments < segmentLimit; j += 1) {
+    for (
+      let i = 0;
+      i < nodePositions.length && segments < segmentLimit;
+      i += 1
+    ) {
+      for (
+        let j = i + 1;
+        j < nodePositions.length && segments < segmentLimit;
+        j += 1
+      ) {
         const a = nodePositions[i];
         const b = nodePositions[j];
 

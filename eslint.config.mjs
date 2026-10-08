@@ -48,6 +48,46 @@ const eslintConfig = defineConfig([
       "@next/next/no-img-element": "error",
     },
   },
+
+  {
+    /**
+     * `react-hooks/immutability` is on by default in eslint-plugin-react-hooks
+     * v7, and it flags every mutation of a value that flowed through a hook.
+     *
+     * In `src/components/three` those values are three.js scene-graph objects —
+     * shader uniforms, materials, cameras — which are mutable *by design* and
+     * have no immutable counterpart. Writing
+     *
+     *     handle.uniforms.uTime.value += delta
+     *
+     * inside `useFrame` is precisely what React Three Fiber's `useFrame` exists
+     * for, and it cannot be expressed any other way: three.js has no
+     * withUniforms()-style API, and re-creating a material per frame would
+     * leak GPU resources and recompile shaders every frame.
+     *
+     * The rule exists to stop in-place mutation of React *props and state*.
+     * Nothing in this directory stores scene objects in React state — they
+     * live in refs, in `useMemo` factories and in R3F's own reconciler — so the
+     * rule cannot fire here for the reason it was written. Every reported site
+     * is a false positive of that one shape.
+     *
+     * It is therefore turned off for this directory only. The scope is narrow
+     * on purpose: the rest of `src/` keeps the rule, so a genuine
+     * state-mutation anywhere else in the app is still an error.
+     *
+     * One residual gap is worth naming: components such as `Stage` select the
+     * store's `palette` object via `useThreeStore((s) => s.palette)`, and that
+     * *is* React state — mutating it in place would be a real bug this rule
+     * would once have caught. Nothing in this directory does so (the palette
+     * is always replaced via `setTheme`, never written field by field), but if
+     * that ever changes, re-enable the rule here instead of relying on it
+     * staying off.
+     */
+    files: ["src/components/three/**/*.{ts,tsx}"],
+    rules: {
+      "react-hooks/immutability": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

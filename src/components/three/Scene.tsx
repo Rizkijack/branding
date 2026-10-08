@@ -128,8 +128,7 @@ function RenderScheduler() {
       const next = Math.max(1, gl.getPixelRatio() - 0.25);
       if (next < gl.getPixelRatio()) {
         gl.setPixelRatio(next);
-        // eslint-disable-next-line no-console -- one line, once per step-down
-        console.info(`[three] dpr stepped down to ${next} (${fps|0}fps)`);
+        console.info(`[three] dpr stepped down to ${next} (${fps | 0}fps)`);
       }
     }
     void dprRef;

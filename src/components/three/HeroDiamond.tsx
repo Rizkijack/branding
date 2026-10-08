@@ -87,7 +87,10 @@ export function HeroDiamond({
   /* ---- Geometry ---- */
   const bodyGeometry = useMemo(() => createOctahedronGeometry(), []);
   const edgeGeometry = useMemo(() => createFacetEdgesGeometry(), []);
-  const ringGeometry = useMemo(() => new THREE.TorusGeometry(1.85, 0.012, 8, 96), []);
+  const ringGeometry = useMemo(
+    () => new THREE.TorusGeometry(1.85, 0.012, 8, 96),
+    [],
+  );
 
   /* ---- Material ---- */
   // Built once with placeholder colours; the palette effect below re-tints it
@@ -234,7 +237,11 @@ export function HeroDiamond({
         // between frames.
         group.position.lerp(sample.position, 1 - Math.pow(0.001, dt));
         group.scale.setScalar(
-          THREE.MathUtils.lerp(group.scale.x, sample.scale, 1 - Math.pow(0.001, dt)),
+          THREE.MathUtils.lerp(
+            group.scale.x,
+            sample.scale,
+            1 - Math.pow(0.001, dt),
+          ),
         );
         group.rotation.x = THREE.MathUtils.lerp(
           group.rotation.x,

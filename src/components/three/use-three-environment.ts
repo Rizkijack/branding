@@ -19,6 +19,7 @@ import { useSyncExternalStore } from "react";
 
 import {
   DEFAULT_PALETTE,
+  isThreeActive,
   readThree,
   useThreeStore,
   type QualityTier,
@@ -133,7 +134,8 @@ export function detectQuality(): QualityTier {
   if (!wide && cores <= 4) return "low";
 
   // High tier needs headroom on every axis.
-  if (wide && cores >= 8 && (memory === undefined || memory >= 8)) return "high";
+  if (wide && cores >= 8 && (memory === undefined || memory >= 8))
+    return "high";
 
   return "medium";
 }
@@ -178,7 +180,10 @@ export function readPalette(dprCap: number): ThreePalette {
     teal: cssVar("--brand-teal", DEFAULT_PALETTE.teal),
     background: cssVar("--bg", DEFAULT_PALETTE.background),
     foreground: cssVar("--fg", DEFAULT_PALETTE.foreground),
-    dpr: Math.min(dprCap, typeof window === "undefined" ? 1 : window.devicePixelRatio || 1),
+    dpr: Math.min(
+      dprCap,
+      typeof window === "undefined" ? 1 : window.devicePixelRatio || 1,
+    ),
   };
 }
 
@@ -200,6 +205,34 @@ const getFalse = () => false;
  */
 export function useMounted(): boolean {
   return useSyncExternalStore(subscribeNoop, getTrue, getFalse);
+}
+
+/**
+ * `isThreeActive()` as a reactive hook: `false` on the server, during hydration
+ * and until the capability probe resolves; `true` thereafter whenever effects
+ * are enabled, the device supports WebGL, and the OS is not asking for reduced
+ * motion.
+ *
+ * Every 3D host component (`GlobalCanvas`, `HeroDiamondStage`, `Timeline3D`)
+ * consults this before mounting a canvas, because a canvas that renders nothing
+ * still allocates a WebGL context — the expensive part.
+ *
+ * Implemented with `useSyncExternalStore` for the same reason as `useMounted`:
+ * the `useState` + `useEffect` + `setState` alternative is exactly the
+ * cascading-render pattern `react-hooks/set-state-in-effect` exists to catch.
+ * The store is the external system; this hook only subscribes to it.
+ *
+ * The store notifies its listeners on *every* state change — including every
+ * scroll tick — so returning a primitive boolean from `getSnapshot` is what
+ * stops a scroll burst from re-rendering the hosts: React's `Object.is`
+ * comparison sees the same `true`/`false` and bails out.
+ */
+export function useThreeActive(): boolean {
+  return useSyncExternalStore(
+    useThreeStore.subscribe,
+    () => isThreeActive(),
+    getFalse,
+  );
 }
 
 /* -------------------------------------------------------------------------

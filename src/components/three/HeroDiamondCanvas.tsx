@@ -59,11 +59,7 @@ export default function HeroDiamondCanvas({
             cubemap on the GPU. No remote HDR, no network request. */}
         <Stage intensity={1} />
 
-        <HeroDiamond
-          scrollDriven={scrollDriven}
-          withRings
-          scale={1.15}
-        />
+        <HeroDiamond scrollDriven={scrollDriven} withRings scale={1.15} />
       </Suspense>
     </Canvas>
   );

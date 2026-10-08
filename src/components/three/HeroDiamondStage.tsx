@@ -25,10 +25,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
 
 import { AnimatedDiamond } from "@/components/illustrations/AnimatedDiamond";
-import { isThreeActive, useThreeStore } from "@/components/three/store";
+import { useThreeActive } from "@/components/three/use-three-environment";
 import { cn } from "@/lib/utils";
 
 /**
@@ -57,27 +56,11 @@ export function HeroDiamondStage({
   aspect = "aspect-[4/3]",
   scrollDriven = false,
 }: HeroDiamondStageProps) {
-  const [mounted, setMounted] = useState(false);
-  const [active, setActive] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setActive(isThreeActive());
-
-    // Swap on the predicate, not on every store tick.
-    const unsubscribe = useThreeStore.subscribe(() => {
-      setActive((current) => {
-        const next = isThreeActive();
-        return current === next ? current : next;
-      });
-    });
-
-    return unsubscribe;
-  }, []);
+  const active = useThreeActive();
 
   // Before the probe resolves (or SSR): the original SVG. It is the exact same
   // illustration the site shipped before the 3D layer existed.
-  if (!mounted || !active) {
+  if (!active) {
     return <AnimatedDiamond className={cn(className)} />;
   }
 

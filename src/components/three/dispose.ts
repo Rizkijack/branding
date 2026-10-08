@@ -29,7 +29,9 @@ export function disposeMaterial(
 }
 
 /** Disposes a geometry, tolerating undefined. */
-export function disposeGeometry(geometry: THREE.BufferGeometry | undefined): void {
+export function disposeGeometry(
+  geometry: THREE.BufferGeometry | undefined,
+): void {
   geometry?.dispose();
 }
 

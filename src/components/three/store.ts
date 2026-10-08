@@ -166,7 +166,9 @@ export const useThreeStore = create<ThreeState>()((set) => ({
   // `routeKey` deliberately only increments on an actual change, so an effect
   // keyed on it fires once per navigation rather than once per render.
   setRoute: (route) =>
-    set((state) => (state.route === route ? state : { route, routeKey: state.routeKey + 1 })),
+    set((state) =>
+      state.route === route ? state : { route, routeKey: state.routeKey + 1 },
+    ),
 
   triggerBurst: () => set((state) => ({ burstKey: state.burstKey + 1 })),
   setFocusedProject: (focusedProject) => set({ focusedProject }),

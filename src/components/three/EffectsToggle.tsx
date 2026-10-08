@@ -18,11 +18,11 @@
 
 "use client";
 
-import { useReducedMotion } from "framer-motion";
-
 import { SparklesIcon } from "@/components/icons/InlineIcons";
-import { useMounted } from "@/components/three/use-three-environment";
-import { useEffectsPreference } from "@/components/three/use-three-environment";
+import {
+  useEffectsPreference,
+  useMounted,
+} from "@/components/three/use-three-environment";
 import { cn } from "@/lib/utils";
 
 export function EffectsToggle({ className }: { className?: string }) {
@@ -37,7 +37,11 @@ export function EffectsToggle({ className }: { className?: string }) {
       type="button"
       onClick={toggle}
       aria-pressed={enabled}
-      title={enabled ? "3D effects are on — click to turn off" : "3D effects are off — click to turn on"}
+      title={
+        enabled
+          ? "3D effects are on — click to turn off"
+          : "3D effects are off — click to turn on"
+      }
       className={cn(
         "inline-flex h-9 items-center gap-1.5 rounded-pill border px-3 text-[0.76rem] font-medium",
         "transition-colors duration-250",
@@ -50,7 +54,7 @@ export function EffectsToggle({ className }: { className?: string }) {
       <SparklesIcon
         className={cn(
           "text-[0.85rem] transition-transform duration-400",
-          enabled && "rotate-0 scale-100",
+          enabled && "scale-100 rotate-0",
         )}
       />
       <span className="hidden sm:inline">3D</span>
