@@ -121,7 +121,7 @@ export const contact = {
    * an obfuscated form or an email service — the /api/contact route handler is
    * already wired for that (see RESEND_* env vars in .env.example).
    */
-  email: "rizkijack.pp.ua",
+  email: "rizkijack@rizkijack.pp.ua",
   /** Where the "Book a call" pill points. Leave "" to hide the button. */
   bookingUrl: "",
 } as const;
