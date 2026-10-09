@@ -275,7 +275,12 @@ function TimelineScene({ entries }: { entries: readonly TimelineEntry[] }) {
       />
       <ambientLight intensity={0.35} />
 
-      <lineSegments geometry={lineGeometry} material={lineMaterial} />
+      {/* The curve itself. `threeLine` (THREE.Line) draws one continuous strip
+          through every point; R3F names it `threeLine` rather than `line`
+          because the lowercase form collides with the SVG intrinsic. The old
+          `lineSegments` drew disjoint pairs, rendering only every other
+          segment of this contiguous path. */}
+      <threeLine geometry={lineGeometry} material={lineMaterial} />
 
       {entries.map((entry, index) => (
         <TimelineNode
@@ -313,13 +318,13 @@ export function Timeline3D({ entries, className }: Timeline3DProps) {
   if (!active || entries.length === 0) return null;
 
   return (
-    // `aria-hidden` + `pointer-events-none` on the wrapper: the band is
-    // decorative and must never intercept a click meant for the page.
-    <div
-      aria-hidden="true"
-      className={className}
-      style={{ pointerEvents: "none" }}
-    >
+    // This band is the one canvas on the site that takes pointer events. It
+    // earns them by sitting in its own block rather than overlaying the DOM
+    // timeline (see the file header), so hovering a node can never steal a
+    // click from real content below. `aria-hidden` stays regardless: the
+    // accessible `<ol>` in AboutSections carries every fact as plain text, so
+    // the hover labels are pure decoration.
+    <div aria-hidden="true" className={className}>
       <Canvas
         camera={{ position: [0, 0.6, 8], fov: 38, near: 0.1, far: 50 }}
         dpr={[1, 1.5]}

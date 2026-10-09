@@ -15,9 +15,10 @@
  *
  * Hover affordances are therefore deliberately omitted. Under `pointer-events:
  * none` no pointer event ever reaches the canvas, so an `onPointerOver` handler
- * and an `<Html>` label here would be dead code — the bug `Timeline3D`
- * currently has. If you want hover labels, the host must drop `pointer-events:
- * none`, which is only safe when nothing interactive sits behind the canvas.
+ * and an `<Html>` label here would be dead code. `Timeline3D` is the exception,
+ * not the pattern: it drops `pointer-events: none` because it sits in its own
+ * block with nothing clickable behind it, which this band could do too if the
+ * orbit ever wants labels — see the header of that file for the reasoning.
  *
  * --------------------------------------------------------------------------- *
  * Frameloop                                                                   *
