@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * PROFILE — single source of truth for personal data.
+ * PROFILE - single source of truth for personal data.
  * ============================================================================
  * Everything on the site that describes *you* lives here. Edit this file only;
  * no component needs to be touched to update your name, links, timeline, etc.
@@ -45,14 +45,14 @@ export interface SkillGroup {
 /** A point in time on the /about timeline. */
 export interface TimelineEntry {
   readonly id: string;
-  /** "education" | "experience" | "milestone" — drives the badge + filter. */
+  /** "education" | "experience" | "milestone" - drives the badge + filter. */
   readonly kind: "education" | "experience" | "milestone";
   readonly title: string;
   /** Organisation, school, community… */
   readonly org: string;
   /** Location if meaningful, otherwise omit. */
   readonly location?: string;
-  /** Display date, e.g. "2024 — Present" or "Aug 2025". */
+  /** Display date, e.g. "2024 - Present" or "Aug 2025". */
   readonly period: string;
   readonly summary: string;
   /** Optional bullet list of what you did there. */
@@ -91,10 +91,10 @@ export const profile = {
     "Full-stack developer and agentic-systems builder trading on-chain, shipping products, and moderating communities from Central Java, Indonesia.",
   /** Multi-paragraph `/about` bio. Rendered with a blank line between items. */
   longBio: [
-    "I'm Rizkijack — a full-stack developer who sits at the intersection of agentic AI and Web3. Most of my days are split between shipping products end-to-end, reading charts, and keeping a couple of online communities healthy. I like work that has a visible surface: a URL someone can open, a transaction someone can verify.",
-    "Technically I'm a TypeScript-first builder. I reach for React and Next.js on the front, Node and Postgres behind it, and I care a lot about the boring parts — type safety, small deployable units, and interfaces that stay fast on a mid-range Android phone. Lately I've been deep into agent workflows: tool-calling loops, evaluation harnesses, and giving models just enough context to be useful instead of just impressive.",
+    "I'm Rizkijack - a full-stack developer who sits at the intersection of agentic AI and Web3. Most of my days are split between shipping products end-to-end, reading charts, and keeping a couple of online communities healthy. I like work that has a visible surface: a URL someone can open, a transaction someone can verify.",
+    "Technically I'm a TypeScript-first builder. I reach for React and Next.js on the front, Node and Postgres behind it, and I care a lot about the boring parts - type safety, small deployable units, and interfaces that stay fast on a mid-range Android phone. Lately I've been deep into agent workflows: tool-calling loops, evaluation harnesses, and giving models just enough context to be useful instead of just impressive.",
     "On the Web3 side I've shipped smart contracts, handled on-chain data, and learned the hard way that “the contract is correct” and “the product works” are different problems. I'm comfortable across the stack, sceptical of hype, and happiest when I'm turning an idea into something I can hand to a stranger and let them poke at it.",
-    "Away from the keyboard I'm usually in Central Java — trading when the setup is clean, reading when it isn't, and maintaining communities of builders who are twelve timezones from each other.",
+    "Away from the keyboard I'm usually in Central Java - trading when the setup is clean, reading when it isn't, and maintaining communities of builders who are twelve timezones from each other.",
   ],
   location: {
     city: "Central Java",
@@ -118,7 +118,7 @@ export const contact = {
   /**
    * Shown on /contact and used as the `mailto:` target.
    * NOTE: this is a plain address string, not a secret. To stop bots, swap it for
-   * an obfuscated form or an email service — the /api/contact route handler is
+   * an obfuscated form or an email service - the /api/contact route handler is
    * already wired for that (see RESEND_* env vars in .env.example).
    */
   email: "rizkijack@rizkijack.pp.ua",
@@ -132,7 +132,7 @@ export const contact = {
 
 /**
  * Rendered as the /socials table (Platform | Handle | Link) and as the icon
- * strip in the footer. Add or remove entries freely — the table and footer
+ * strip in the footer. Add or remove entries freely - the table and footer
  * both derive from this array.
  */
 export const socials: readonly ProfileLink[] = [
@@ -162,7 +162,7 @@ export const socials: readonly ProfileLink[] = [
     label: "Website",
     handle: "slopagentbook.vercel.app",
     url: "https://slopagentbook.vercel.app",
-    note: "My agent handbook — notes, patterns, and things that broke in production.",
+    note: "My agent handbook - notes, patterns, and things that broke in production.",
   },
 ];
 
@@ -232,7 +232,7 @@ export const skillGroups: readonly SkillGroup[] = [
     id: "moderator",
     title: "Moderator",
     blurb:
-      "Keeping developer communities readable and useful — clear rules, fast response, no drama.",
+      "Keeping developer communities readable and useful - clear rules, fast response, no drama.",
     skills: [
       {
         name: "Community Guidelines",
@@ -262,9 +262,9 @@ export const timeline: readonly TimelineEntry[] = [
     title: "B.S. Computer Science",
     org: "Universitas Diponegoro",
     location: "Semarang, Indonesia",
-    period: "2020 — 2024",
+    period: "2020 - 2024",
     summary:
-      "Foundations in algorithms, databases and networks — plus the first time I shipped something strangers could actually use.",
+      "Foundations in algorithms, databases and networks - plus the first time I shipped something strangers could actually use.",
     details: [
       "Built the department's first student-tooling Discord bot",
       "Wrote my thesis-adjacent side project on on-chain data indexing",
@@ -276,7 +276,7 @@ export const timeline: readonly TimelineEntry[] = [
     title: "Frontend Developer",
     org: "Product Studio (agency)",
     location: "Remote",
-    period: "2023 — 2024",
+    period: "2023 - 2024",
     summary:
       "Shipped marketing sites and dashboards for clients who needed fast pages more than they needed clever ones.",
     details: [
@@ -291,7 +291,7 @@ export const timeline: readonly TimelineEntry[] = [
     org: "Solo",
     period: "2024",
     summary:
-      "Deployed an on-chain app end to end — contract, indexer, frontend — and learned what 'it works' actually costs.",
+      "Deployed an on-chain app end to end - contract, indexer, frontend - and learned what 'it works' actually costs.",
     details: [
       "Handling real users surfaced the bug class unit tests never would",
       "Started writing post-mortems for every incident",
@@ -303,7 +303,7 @@ export const timeline: readonly TimelineEntry[] = [
     title: "Web3 Full-Stack Engineer",
     org: "Crypto product team",
     location: "Remote",
-    period: "2024 — Present",
+    period: "2024 - Present",
     summary:
       "Full-stack ownership of a trading-adjacent product: typed contracts, indexing pipelines, and a UI people trust with money.",
     details: [
@@ -317,7 +317,7 @@ export const timeline: readonly TimelineEntry[] = [
     kind: "experience",
     title: "Community Moderator",
     org: "Developer communities",
-    period: "2024 — Present",
+    period: "2024 - Present",
     summary:
       "Moderating builder spaces: enforcing written rules, answering the questions that gate onboarding, and escalating fast.",
     details: [
@@ -330,7 +330,7 @@ export const timeline: readonly TimelineEntry[] = [
     kind: "milestone",
     title: "Pivoted into agentic systems",
     org: "Self-directed",
-    period: "2025 — Present",
+    period: "2025 - Present",
     summary:
       "Moved from using AI as autocomplete to designing agent workflows with tools, evals and explicit failure modes.",
     details: [
@@ -386,7 +386,7 @@ export const funFacts: readonly FunFact[] = [
     id: "timezone",
     icon: "globe",
     label: "Working hours",
-    value: "Late nights WIB — overlap with EU mornings",
+    value: "Late nights WIB - overlap with EU mornings",
   },
   {
     id: "editor",
@@ -404,7 +404,7 @@ export const funFacts: readonly FunFact[] = [
     id: "chain",
     icon: "chart",
     label: "Chain of choice",
-    value: "Ethereum L2s — fast and cheap enough to experiment",
+    value: "Ethereum L2s - fast and cheap enough to experiment",
   },
   {
     id: "offline",
@@ -414,5 +414,5 @@ export const funFacts: readonly FunFact[] = [
   },
 ];
 
-/** All tech tags used across projects — re-exported for convenience. */
+/** All tech tags used across projects - re-exported for convenience. */
 export { getAllTechTags as allTechTags } from "./projects";

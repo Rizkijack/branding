@@ -20,11 +20,7 @@ import {
 } from "@/components/icons/InlineIcons";
 import { RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { Card } from "@/components/ui/Card";
-import {
-  GradientText,
-  Section,
-  SectionHeading,
-} from "@/components/ui/Typography";
+import { Section, SectionHeading } from "@/components/ui/Typography";
 import { Timeline3D } from "@/components/three/Timeline3D";
 import type { TimelineEntry } from "@/data/profile";
 import { funFacts, skillGroups, timeline } from "@/data/profile";
@@ -87,13 +83,7 @@ export function BioSection({ paragraphs }: { paragraphs: readonly string[] }) {
     <Section aria-labelledby="bio-heading">
       <div className="container-page">
         <SectionHeading
-          eyebrow="The story so far"
           title="Long version"
-          titleNode={
-            <>
-              The <GradientText>long version</GradientText>
-            </>
-          }
           align="left"
           id="bio-heading"
           className="mb-10"
@@ -141,13 +131,7 @@ export function TimelineSection({
     <Section aria-labelledby="timeline-heading" className="relative">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Experience"
           title="How I got here"
-          titleNode={
-            <>
-              How I <GradientText>got here</GradientText>
-            </>
-          }
           lede="Education, roles, and the handful of moments that actually changed direction."
           id="timeline-heading"
           className="mb-14"
@@ -273,13 +257,7 @@ export function SkillsSection() {
     <Section aria-labelledby="skills-heading">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Capabilities"
           title="Skills by category"
-          titleNode={
-            <>
-              Skills by <GradientText>category</GradientText>
-            </>
-          }
           lede="Self-assessed, and deliberately split by role — the three contexts I actually work in."
           id="skills-heading"
           className="mb-12"
@@ -314,12 +292,12 @@ export function SkillsSection() {
                         role="presentation"
                         className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-surface-3"
                       >
+                        {/* Solid fill, not a gradient ramp: the number next to
+                            it already states the value, the bar only has to be
+                            readable at a glance. */}
                         <div
-                          className="h-full rounded-full"
-                          style={{
-                            width: `${skill.level}%`,
-                            backgroundImage: "var(--grad-soft)",
-                          }}
+                          className="h-full rounded-full bg-brand-purple"
+                          style={{ width: `${skill.level}%` }}
                         />
                       </div>
 
@@ -349,40 +327,34 @@ export function FunFactsSection() {
     <Section aria-labelledby="facts-heading">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Off the clock"
           title="Fun facts"
-          titleNode={
-            <>
-              Fun <GradientText>facts</GradientText>
-            </>
-          }
           lede="The details that never make it into a résumé."
           id="facts-heading"
           className="mb-12"
         />
 
-        <RevealGroup className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/*
+          A hairline grid, not six cards. The `gap-px` on a `bg-line` container
+          is what draws the rules between cells, so the data sits in one framed
+          field instead of six floating boxes.
+        */}
+        <RevealGroup className="grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
           {funFacts.map((fact) => (
-            <RevealItem key={fact.id}>
-              <Card
-                padding="md"
-                className="flex h-full items-start gap-4 transition-[transform,box-shadow] duration-400 hover:-translate-y-1 hover:shadow-md"
+            <RevealItem key={fact.id} className="bg-surface p-5 sm:p-6">
+              <span
+                aria-hidden="true"
+                className="grid size-10 shrink-0 place-items-center rounded-xl bg-brand-purple/12 text-[1.15rem] text-brand-purple"
               >
-                <span
-                  aria-hidden="true"
-                  className="grid size-10 shrink-0 place-items-center rounded-xl bg-brand-purple/12 text-[1.15rem] text-brand-purple"
-                >
-                  <FactIcon name={fact.icon} />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-[0.72rem] font-semibold tracking-[0.14em] text-fg-subtle uppercase">
-                    {fact.label}
-                  </p>
-                  <p className="mt-1 text-[0.92rem] leading-snug font-medium text-fg">
-                    {fact.value}
-                  </p>
-                </div>
-              </Card>
+                <FactIcon name={fact.icon} />
+              </span>
+              <div className="min-w-0">
+                <p className="mt-4 text-[0.72rem] font-semibold tracking-[0.14em] text-fg-subtle uppercase">
+                  {fact.label}
+                </p>
+                <p className="mt-1 text-[0.92rem] leading-snug font-medium text-fg">
+                  {fact.value}
+                </p>
+              </div>
             </RevealItem>
           ))}
         </RevealGroup>

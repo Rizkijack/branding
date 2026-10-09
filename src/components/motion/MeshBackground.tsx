@@ -2,11 +2,13 @@
 
 /**
  * ============================================================================
- * MESH BACKGROUND — the animated iridescent blobs behind hero + key sections.
+ * MESH BACKGROUND — the soft violet atmosphere behind hero + key sections.
  * ============================================================================
  * Implementation notes:
  *  • Pure CSS radial gradients, zero images and zero runtime cost beyond the
  *    compositor.
+ *  • One analogous hue family, low opacity. The goal is atmosphere the eye
+ *    slides over, not a colour show that competes with the content.
  *  • `blur` is the single most expensive thing here, so it is applied via a
  *    pre-blurred layer and capped: mobile and reduced-motion visitors get the
  *    cheap path (opacity + scale animation only, no blur filter).
@@ -33,42 +35,48 @@ interface BlobSpec {
   readonly opacity: number;
 }
 
+/**
+ * The blobs sit in a single analogous family now (violet → indigo → mauve,
+ * with one low-opacity gold glint). Previously this was a five-hue rainbow
+ * drifting behind every hero, which is the aurora-blob default; opacities are
+ * pulled down so the field reads as atmosphere, not as a smoothie.
+ */
 const DEFAULT_BLOBS: readonly BlobSpec[] = [
   {
     color: "var(--brand-purple)",
-    size: 46,
+    size: 42,
     x: "8%",
     y: "0%",
     duration: 19,
     delay: 0,
-    opacity: 0.5,
+    opacity: 0.38,
   },
   {
     color: "var(--brand-blue)",
-    size: 40,
+    size: 36,
     x: "58%",
     y: "6%",
     duration: 24,
     delay: 1.6,
-    opacity: 0.44,
+    opacity: 0.3,
   },
   {
     color: "var(--brand-pink)",
-    size: 34,
+    size: 30,
     x: "26%",
     y: "48%",
     duration: 21,
     delay: 0.9,
-    opacity: 0.34,
+    opacity: 0.2,
   },
   {
     color: "var(--brand-orange)",
-    size: 26,
+    size: 22,
     x: "72%",
     y: "56%",
     duration: 27,
     delay: 2.4,
-    opacity: 0.26,
+    opacity: 0.13,
   },
 ];
 
@@ -81,7 +89,7 @@ const SUBTLE_BLOBS: readonly BlobSpec[] = DEFAULT_BLOBS.map((b) => ({
 
 export interface MeshBackgroundProps {
   className?: string;
-  /** `soft` is for interior sections; `hero` is the loud one. */
+  /** `soft` is for interior sections; `hero` is the more visible one. */
   intensity?: "hero" | "soft";
   /** Number of blobs actually rendered. Fewer = cheaper. */
   count?: number;

@@ -18,8 +18,7 @@ import { ArrowLeftIcon, CheckIcon } from "@/components/icons/InlineIcons";
 import { MeshBackground } from "@/components/motion/MeshBackground";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { Button } from "@/components/ui/Button";
-import { GradientDivider, Section } from "@/components/ui/Typography";
-import { Eyebrow, GradientText, Lede } from "@/components/ui/Typography";
+import { Eyebrow, Lede, Section } from "@/components/ui/Typography";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Tag } from "@/components/ui/Tag";
 import { getProject, getRelatedProjects, projects } from "@/data/projects";
@@ -313,8 +312,6 @@ export default async function ProjectDetailPage({
           --------------------------------------------------------------- */}
       <Section className="pb-20 sm:pb-28">
         <div className="container-page">
-          <GradientDivider />
-
           <div className="mt-14">
             <Eyebrow as="h2">What I built</Eyebrow>
 
@@ -323,7 +320,7 @@ export default async function ProjectDetailPage({
                 <li
                   key={item}
                   className={cn(
-                    "flex items-start gap-3 rounded-xl2 border border-line/70 bg-surface/60 p-4",
+                    "flex items-start gap-3 rounded-xl2 border border-line/70 bg-surface-2 p-4",
                     "text-[0.92rem] leading-relaxed text-fg-muted",
                   )}
                   // The left edge picks up the project's accent colour.
@@ -365,10 +362,7 @@ export default async function ProjectDetailPage({
             <header className="flex flex-col gap-3">
               <Eyebrow as="h2">Related work</Eyebrow>
               <h2 className="-mt-1 text-[clamp(1.6rem,1.2rem+1.8vw,2.4rem)] font-bold">
-                Shares a stack with{" "}
-                <GradientText className="text-gradient">
-                  {project.title}
-                </GradientText>
+                Shares a stack with {project.title}
               </h2>
             </header>
 

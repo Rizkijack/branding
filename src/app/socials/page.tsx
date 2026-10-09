@@ -28,7 +28,6 @@ import { Card } from "@/components/ui/Card";
 import { Tag } from "@/components/ui/Tag";
 import {
   Eyebrow,
-  GradientDivider,
   GradientText,
   Lede,
   Section,
@@ -91,7 +90,7 @@ export default function SocialsPage() {
             <Eyebrow>Find me here</Eyebrow>
 
             <h1 className="text-[clamp(2.4rem,1.4rem+4.4vw,4.2rem)] leading-[1.05] font-bold">
-              Every place I <GradientText animate>actually post</GradientText>
+              Every place I <GradientText>actually post</GradientText>
             </h1>
 
             <Lede className="mx-auto max-w-2xl text-center">
@@ -106,12 +105,15 @@ export default function SocialsPage() {
       {/* -------------------------------------------------------------------
           The table
           ------------------------------------------------------------------- */}
-      <Section className="pb-20 sm:pb-28">
+      <Section
+        className="pb-20 sm:pb-28"
+        aria-labelledby="socials-table-heading"
+      >
         <div className="container-page">
-          <GradientDivider />
-
-          <header className="mt-14 flex flex-col gap-3">
-            <Eyebrow as="h2">The links</Eyebrow>
+          <header className="flex flex-col gap-3">
+            <h2 id="socials-table-heading" className="sr-only">
+              The links
+            </h2>
             <p className="max-w-2xl text-[0.95rem] text-fg-muted">
               Platform, handle, and a way straight there. Anything marked
               &ldquo;not configured&rdquo; is a slot waiting for a handle.
@@ -139,7 +141,6 @@ export default function SocialsPage() {
       <Section className="pb-20 sm:pb-28">
         <div className="container-page">
           <header className="flex flex-col gap-3">
-            <Eyebrow as="h2">Elsewhere</Eyebrow>
             <h2 className="text-[clamp(1.75rem,1.15rem+2.6vw,3rem)] leading-[1.1] font-bold">
               Or skip the platforms entirely
             </h2>
@@ -233,8 +234,6 @@ export default function SocialsPage() {
         <div className="container-page">
           <Card padding="lg" className="text-center">
             <div className="relative mx-auto flex max-w-2xl flex-col items-center gap-4">
-              <Eyebrow>One more thing</Eyebrow>
-
               <h2 className="text-[clamp(1.6rem,1.1rem+2vw,2.5rem)] leading-[1.12] font-bold">
                 Got a question that doesn&apos;t fit a handle?
               </h2>

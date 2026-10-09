@@ -115,8 +115,9 @@ export function Hero() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col items-start gap-6 text-left"
         >
-          {/* Availability pill */}
-          <p className="inline-flex items-center gap-2 rounded-pill border border-line bg-surface/70 px-3.5 py-1.5 text-[0.76rem] font-medium text-fg-muted backdrop-blur-sm">
+          {/* Availability pill. Solid surface: frosted glass on a small chip
+              reads as decoration, and this dot carries a real state. */}
+          <p className="inline-flex items-center gap-2 rounded-pill border border-line bg-surface px-3.5 py-1.5 text-[0.76rem] font-medium text-fg-muted">
             <span aria-hidden="true" className="relative flex size-2">
               {/* Pulsing halo behind a solid dot: cheap "live" signal. */}
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand-teal opacity-70" />
@@ -130,10 +131,12 @@ export function Hero() {
             {profile.name} — {phrases.join(" · ")}
           </h1>
 
-          {/* Visible display name */}
+          {/* Visible display name. The violet gradient is earned: this is the
+              single focal point of the page. Static — no shimmer sweep, the
+              restraint is the point. */}
           <p className="font-display text-[clamp(2.5rem,1.6rem+4.2vw,4.25rem)] leading-[1.03] font-bold tracking-tight">
             Hi, I&apos;m{" "}
-            <GradientText animate className="text-gradient">
+            <GradientText className="text-gradient">
               {profile.name}
             </GradientText>
           </p>
@@ -159,25 +162,10 @@ export function Hero() {
             {profile.shortBio}
           </p>
 
-          {/* Meta: location + timezone */}
-          <dl className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[0.82rem] text-fg-subtle">
-            <div className="flex items-center gap-2">
-              <dt className="sr-only">Based in</dt>
-              <dd className="flex items-center gap-1.5">
-                <span
-                  aria-hidden="true"
-                  className="size-1.5 rounded-full bg-brand-purple"
-                />
-                {profile.location.label}
-              </dd>
-            </div>
-            <div className="flex items-center gap-2">
-              <dt className="sr-only">Time zone</dt>
-              <dd>{profile.timeZone}</dd>
-            </div>
-          </dl>
-
-          {/* CTAs */}
+          {/* CTAs. Location and timezone are deliberately NOT in the hero —
+              the availability pill above already carries the availability
+              signal, and both facts sit on /contact and in the footer where
+              they belong to a form, not to a first impression. */}
           <div className="flex flex-wrap items-center gap-3 pt-1">
             <Button href="/projects" size="lg">
               View my work
@@ -197,7 +185,7 @@ export function Hero() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`${profile.name} on ${social.label}`}
-                    className="group flex items-center gap-2 rounded-pill border border-line bg-surface/60 px-3 py-1.5 text-[0.78rem] font-medium text-fg-muted backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-purple/50 hover:text-fg hover:shadow-md"
+                    className="group flex items-center gap-2 rounded-pill border border-line bg-surface px-3 py-1.5 text-[0.78rem] font-medium text-fg-muted transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-purple/50 hover:text-fg hover:shadow-md"
                   >
                     <SocialIcon
                       id={social.id}

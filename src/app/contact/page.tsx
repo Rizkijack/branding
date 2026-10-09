@@ -97,7 +97,7 @@ export default function ContactPage() {
 
           <h1 className="max-w-3xl text-[clamp(2rem,1.35rem+3.6vw,3.5rem)] leading-[1.06] font-bold">
             Let&apos;s talk about{" "}
-            <GradientText animate>what you&apos;re building</GradientText>
+            <GradientText>what you&apos;re building</GradientText>
           </h1>
 
           <Lede className="mx-auto max-w-2xl text-center">

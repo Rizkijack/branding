@@ -4,7 +4,7 @@
  * ============================================================================
  * SectionHeading  — small uppercase eyebrow + large title + optional lede
  * Eyebrow         — the uppercase label on its own (used in cards, too)
- * GradientText    — iridescent clipped text, with an optional sweep animation
+ * GradientText    — text clipped to a two-stop violet ramp, used sparingly
  * Prose / Lede    — body copy defaults so paragraphs stay consistent
  */
 
@@ -15,6 +15,10 @@ import { cn } from "@/lib/utils";
 
 /* -------------------------------------------------------------------------
  * Eyebrow
+ * -------------------------------------------------------------------------
+ * Neutral by default. Under the restrained palette the violet accent is
+ * reserved for things you can act on (links, CTAs, focus rings), so a label
+ * above a heading stays quiet and lets the heading carry the weight.
  * ---------------------------------------------------------------------- */
 
 export function Eyebrow({
@@ -32,7 +36,7 @@ export function Eyebrow({
     {
       className: cn(
         "text-[0.7rem] font-semibold tracking-[0.18em] uppercase",
-        "text-brand-purple",
+        "text-fg-subtle",
         className,
       ),
     },
@@ -120,31 +124,31 @@ export function SectionHeading({
  * ---------------------------------------------------------------------- */
 
 /**
- * Renders children clipped to an iridescent gradient.
+ * Renders children clipped to a two-stop violet ramp.
  *
- * `animate` sweeps the gradient left→right. The animation is disabled by the
- * global `prefers-reduced-motion` rule in globals.css, so no prop needed.
+ * This used to be a four-hue iridescent rainbow and was stamped on the last
+ * two words of nearly every heading on the site, which is one of the loudest
+ * repeating tells a page can have. It is now a single-hue sheen and is used
+ * sparingly - a headline earns it, it isn't born with it.
+ *
+ * Static by design: there used to be an optional left-to-right sweep, but a
+ * shimmering gradient on text is exactly the kind of motion that reads as
+ * generated, so the prop is gone.
  */
 export function GradientText({
   children,
   className,
-  animate = false,
   as: Tag = "span",
 }: {
   children: ReactNode;
   className?: string;
-  animate?: boolean;
   as?: ElementType;
 }) {
   const Tagged = Tag as ElementType;
   return createElement(
     Tagged,
     {
-      className: cn(
-        "text-gradient",
-        animate && "animate-[shimmer_9s_linear_infinite]",
-        className,
-      ),
+      className: cn("text-gradient", className),
     },
     children,
   );
@@ -184,7 +188,10 @@ export function GradientDivider({ className }: { className?: string }) {
   );
 }
 
-/** Consistent vertical rhythm for a page's main content. */
+/** Consistent vertical rhythm for a page's main content.
+
+    Generous by design: whitespace is the cheapest way to make a page feel
+    considered, so sections breathe rather than stack tightly. */
 export function Section({
   children,
   className,
@@ -204,7 +211,7 @@ export function Section({
     {
       id,
       "aria-labelledby": ariaLabelledby,
-      className: cn("relative py-16 sm:py-24", className),
+      className: cn("relative py-20 sm:py-28", className),
     },
     children,
   );

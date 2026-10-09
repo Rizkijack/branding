@@ -73,14 +73,15 @@ const sizes: Record<ButtonSize, string> = {
 
 const variants: Record<ButtonVariant, string> = {
   /**
-   * Iridescent gradient. The gradient sits on a ::before-style child div so the
-   * hover shine can slide across without fighting the text colour.
+   * Violet. The gradient sits on a ::before-style child div so the hover shine
+   * can slide across without fighting the text colour. A tinted shadow here is
+   * deliberate (§ shadow hue should follow the surface), but kept soft.
    */
   primary:
-    "text-white shadow-[0_10px_30px_-8px_rgb(138_92_246/0.55)] " +
-    "hover:shadow-[0_16px_40px_-8px_rgb(138_92_246/0.7)] hover:-translate-y-0.5",
+    "text-white shadow-[0_10px_30px_-8px_rgb(138_92_246/0.35)] " +
+    "hover:shadow-[0_16px_40px_-8px_rgb(138_92_246/0.45)] hover:-translate-y-0.5",
   secondary:
-    "border border-line-strong bg-surface/70 text-fg backdrop-blur-sm " +
+    "border border-line-strong bg-surface text-fg " +
     "hover:border-brand-purple/60 hover:bg-surface-2 hover:-translate-y-0.5 " +
     "hover:shadow-md",
   ghost: "text-fg-muted hover:bg-surface-2 hover:text-fg",

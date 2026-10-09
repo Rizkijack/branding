@@ -24,16 +24,20 @@ export function titleCase(value: string): string {
 }
 
 /**
- * Stable, readable accent gradient per index — used by cards that have no
- * explicit `accent` colour so a grid never looks monochrome.
+ * Stable accent colour per index — used by cards that have no explicit
+ * `accent` colour, so a grid still has a per-item identity.
+ *
+ * Restrained: a four-step walk through the violet family plus one gold, never
+ * a saturated rainbow. Variation comes from lightness, not from hue hopping
+ * across the whole wheel.
  */
 const ACCENTS = [
   "#8a5cf6",
-  "#627eea",
-  "#f472b6",
-  "#ff9f5a",
-  "#16a6a1",
-  "#c084fc",
+  "#6366d9",
+  "#9d7cf0",
+  "#e0a24a",
+  "#7c6ae8",
+  "#b98fd6",
 ] as const;
 
 export function accentFor(index: number): string {

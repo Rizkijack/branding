@@ -127,7 +127,7 @@ export const viewport: Viewport = {
   // Never cap zoom — capping it is an accessibility failure.
   maximumScale: 5,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8f7ff" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f7f9" },
     { media: "(prefers-color-scheme: dark)", color: "#0b0b14" },
   ],
   colorScheme: "light dark",

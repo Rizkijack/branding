@@ -5,9 +5,9 @@
  * The shared surface for every content block on the site.
  *
  * Visual stack (bottom → top):
- *   1. `glass` gradient fill (translucent, so the mesh blobs read through)
+ *   1. solid `bg-surface` fill (opaque — the card is paper, not glass)
  *   2. solid 1px border, fading to transparent on the bottom-right
- *   3. optional iridescent rim via ::after (see `border-gradient-after` utility)
+ *   3. optional accent rim via ::after (see `border-gradient-after` utility)
  *   4. hover lift + intensified glow
  *
  * Two interactive flavours:
@@ -62,7 +62,11 @@ export function Card({
       className: cn(
         "relative isolate overflow-hidden rounded-card",
         "border border-line/70",
-        "glass shadow-sm",
+        /* Solid surface, not frosted glass. The old `glass` utility put a
+           translucent blur on every card in the site, which is the
+           glassmorphism-gone-wild tell; hierarchy now comes from the border
+           and the shadow, not from seeing the background through the card. */
+        "bg-surface shadow-sm",
         "transition-[transform,box-shadow,border-color] duration-400 ease-out",
         paddings[padding],
         interactive && [
@@ -75,14 +79,18 @@ export function Card({
       ),
     },
     <>
-      {/* Accent hairline along the top edge. Decorative. */}
+      {/* Accent hairline along the top edge. Decorative.
+
+           Kept deliberately quiet (opacity ~0.5, 1px): the per-project accent
+           colours come straight from data, so this renders whatever the data
+           says without amplifying it into a glow. */}
       {accent ? (
         <span
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-px"
           style={{
             background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
-            opacity: 0.85,
+            opacity: 0.5,
           }}
         />
       ) : null}

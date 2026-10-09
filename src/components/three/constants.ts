@@ -19,12 +19,16 @@ export const THREE_TOGGLE_KEY = "branding-3d-enabled";
 /**
  * Palette shared by the diamond shader, the particles and the floating shapes.
  * Hex triples (not THREE.Color yet) so this file stays web-statement clean.
+ *
+ * Restrained: one violet accent over an analogous indigo family, with a single
+ * warm gold used as the gemstone specular hint. The runtime source of truth is
+ * the CSS `--brand-*` tokens (see `readPalette`); these are the SSR fallback.
  */
 export const PALETTE = {
   purple: "#8a5cf6",
-  blue: "#627eea",
-  pink: "#f472b6",
-  orange: "#ff9f5a",
+  blue: "#6366d9",
+  pink: "#b98fd6",
+  orange: "#e0a24a",
   teal: "#16a6a1",
 } as const;
 
@@ -36,17 +40,17 @@ export const PALETTE = {
 export const PALETTE_THEME = {
   dark: {
     a: "#a78bfa",
-    b: "#8b9ff5",
-    c: "#f9a8d4",
+    b: "#8b8ff2",
+    c: "#cfb0e8",
     /** Background fog colour, matches --bg #0b0b14. */
     bg: "#0b0b14",
   },
   light: {
-    a: "#7c4fe0",
-    b: "#4f6fe0",
-    c: "#d94f9f",
-    /** Background fog colour, matches --bg #f8f7ff. */
-    bg: "#f8f7ff",
+    a: "#8a5cf6",
+    b: "#6366d9",
+    c: "#b98fd6",
+    /** Background fog colour, matches --bg #f7f7f9. */
+    bg: "#f7f7f9",
   },
 } as const;
 

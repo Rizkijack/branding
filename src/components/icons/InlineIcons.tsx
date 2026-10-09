@@ -328,11 +328,11 @@ export function LogoMark({ className, ...props }: IconProps) {
       <defs>
         <linearGradient id="logo-top" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#a78bfa" />
-          <stop offset="100%" stopColor="#627eea" />
+          <stop offset="100%" stopColor="#8a5cf6" />
         </linearGradient>
         <linearGradient id="logo-bottom" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#8b9ff5" />
-          <stop offset="100%" stopColor="#f472b6" />
+          <stop offset="0%" stopColor="#8b8ff2" />
+          <stop offset="100%" stopColor="#b98fd6" />
         </linearGradient>
       </defs>
       <path d="M16 2 5 16l11 6.5L27 16 16 2Z" fill="url(#logo-top)" />
@@ -343,7 +343,7 @@ export function LogoMark({ className, ...props }: IconProps) {
       />
       <path d="M16 2 5 16h22L16 2Z" fill="url(#logo-top)" />
       <path d="m5 16 11 14V24.5L5 16Z" fill="#5b4ce0" opacity="0.85" />
-      <path d="m27 16-11 14V24.5L27 16Z" fill="#f472b6" opacity="0.55" />
+      <path d="m27 16-11 14V24.5L27 16Z" fill="#b98fd6" opacity="0.55" />
     </svg>
   );
 }

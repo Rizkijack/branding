@@ -19,12 +19,7 @@ import { RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { Card } from "@/components/ui/Card";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Tag } from "@/components/ui/Tag";
-import {
-  GradientText,
-  GradientDivider,
-  Section,
-  SectionHeading,
-} from "@/components/ui/Typography";
+import { Section, SectionHeading } from "@/components/ui/Typography";
 import { getFeaturedProjects } from "@/data/projects";
 import { socials, stats } from "@/data/profile";
 import { cn } from "@/lib/utils";
@@ -41,13 +36,7 @@ export function FeaturedProjects() {
     <Section className="relative" aria-labelledby="featured-heading">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Selected work"
           title="Things I've built and shipped"
-          titleNode={
-            <>
-              Things I&apos;ve <GradientText>built and shipped</GradientText>
-            </>
-          }
           lede="A few recent projects — each one shipped end to end, with the unglamorous parts included."
           id="featured-heading"
           className="mb-12"
@@ -112,8 +101,9 @@ export function FeaturedProjects() {
   );
 }
 
-/** Small arrow glyph reused by the "see more" affordances. */
-function ArrowSpan({ className }: { className?: string }) {
+/** Small arrow glyph reused by the "see more" affordances. Exported so the
+ *  home page composition can reach it without re-inlining the path. */
+export function ArrowSpan({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -144,34 +134,30 @@ export function QuickStats() {
     <Section aria-labelledby="stats-heading">
       <div className="container-page">
         <SectionHeading
-          eyebrow="By the numbers"
           title="Quick stats"
           lede="Rough counts, not vanity metrics — just enough to show the shape of the work."
           id="stats-heading"
           className="mb-11"
         />
 
-        <RevealGroup className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {/*
+          A ruled band, not four cards. The numbers are the content, so they
+          sit in plain layout separated by hairlines — identical boxes would
+          make four equal things compete for an importance none of them has.
+        */}
+        <RevealGroup className="grid grid-cols-2 gap-y-9 border-t border-line pt-9 sm:grid-cols-4 sm:gap-y-0 sm:divide-x sm:divide-line sm:pt-0">
           {stats.map((stat) => (
-            <RevealItem key={stat.id}>
-              <Card
-                padding="lg"
-                className="group h-full text-center transition-[transform,box-shadow] duration-400 hover:-translate-y-1 hover:shadow-glow"
-              >
-                <p
-                  className="font-display text-[clamp(1.9rem,1.3rem+1.9vw,2.9rem)] leading-none font-bold tracking-tight"
-                  /* Gradient text on the number is the strongest accent here. */
-                  aria-label={stat.value}
-                >
-                  <span className="text-gradient">{stat.value}</span>
-                </p>
-                <p className="mt-3 text-[0.88rem] font-semibold text-fg">
-                  {stat.label}
-                </p>
-                <p className="mt-1 text-[0.76rem] text-fg-subtle">
-                  {stat.hint}
-                </p>
-              </Card>
+            <RevealItem
+              key={stat.id}
+              className="sm:px-6 sm:first:pl-0 sm:last:pr-0"
+            >
+              <p className="font-display text-[clamp(1.9rem,1.3rem+1.9vw,2.9rem)] leading-none font-bold tracking-tight text-fg">
+                {stat.value}
+              </p>
+              <p className="mt-3 text-[0.88rem] font-semibold text-fg">
+                {stat.label}
+              </p>
+              <p className="mt-1 text-[0.76rem] text-fg-subtle">{stat.hint}</p>
             </RevealItem>
           ))}
         </RevealGroup>
@@ -192,20 +178,10 @@ export function SocialStrip() {
       <MeshBackground intensity="soft" count={3} />
 
       <div className="relative container-page">
-        <Card
-          padding="lg"
-          className="overflow-hidden text-center"
-          gradientBorder
-        >
+        <Card padding="lg" className="overflow-hidden text-center">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-6">
             <SectionHeading
-              eyebrow="Let's connect"
               title="Working on something interesting?"
-              titleNode={
-                <>
-                  Working on something <GradientText>interesting?</GradientText>
-                </>
-              }
               lede="Open to collaborations, contract work, and conversations about agentic systems or Web3 infrastructure."
               id="connect-heading"
             />
@@ -241,7 +217,7 @@ export function SocialStrip() {
             <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
               <Link
                 href="/contact"
-                className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-pill px-6 text-[0.9rem] font-semibold text-white shadow-[0_10px_30px_-8px_rgb(138_92_246/0.55)] transition-transform duration-300 hover:-translate-y-0.5"
+                className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-pill px-6 text-[0.9rem] font-semibold text-white shadow-[0_10px_30px_-8px_rgb(138_92_246/0.35)] transition-transform duration-300 hover:-translate-y-0.5"
               >
                 <span
                   aria-hidden="true"
@@ -253,7 +229,7 @@ export function SocialStrip() {
               </Link>
               <Link
                 href="/about"
-                className="inline-flex h-11 items-center justify-center rounded-pill border border-line-strong bg-surface/70 px-6 text-[0.9rem] font-semibold text-fg backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-purple/60 hover:shadow-md"
+                className="inline-flex h-11 items-center justify-center rounded-pill border border-line-strong bg-surface px-6 text-[0.9rem] font-semibold text-fg transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-purple/60 hover:shadow-md"
               >
                 More about me
               </Link>
@@ -274,19 +250,19 @@ export function CapabilitiesTeaser() {
     <Section aria-labelledby="roles-heading">
       <div className="container-page">
         <SectionHeading
-          eyebrow="What I do"
           title="Three hats, one workflow"
-          titleNode={
-            <>
-              Three hats, <GradientText>one workflow</GradientText>
-            </>
-          }
           lede="I build the product, trade the market it lives in, and keep the community that uses it healthy."
           id="roles-heading"
-          className="mb-12"
+          align="left"
+          className="mb-10"
         />
 
-        <RevealGroup className="grid gap-5 sm:grid-cols-3">
+        {/*
+          A ruled list, not three cards. The three roles are peers, and peers
+          read better as rows than as three identical boxes fighting over the
+          same importance. The rules do the separating; no container needed.
+        */}
+        <RevealGroup as="ul" className="border-t border-line">
           {[
             {
               title: "Builder",
@@ -307,27 +283,32 @@ export function CapabilitiesTeaser() {
                 "Written guidelines, fast response, and docs that cut the repeat questions before they arrive.",
             },
           ].map((item, index) => (
-            <RevealItem key={item.title}>
-              <Link href={item.to} className="group block h-full">
-                <Card interactive padding="lg" className="flex h-full flex-col">
-                  <span className="text-[0.7rem] font-semibold tracking-[0.18em] text-fg-subtle">
-                    0{index + 1}
-                  </span>
-                  <h3 className="mt-3 text-[1.2rem] font-bold">{item.title}</h3>
-                  <p className="mt-2.5 flex-1 text-[0.9rem] leading-relaxed text-fg-muted">
+            <RevealItem key={item.title} as="li">
+              <Link
+                href={item.to}
+                className="group grid grid-cols-[auto_1fr] items-baseline gap-x-5 border-b border-line py-6 transition-colors duration-300 hover:bg-surface-2/60 sm:grid-cols-[auto_1fr_auto] sm:gap-x-8 sm:py-7"
+              >
+                <span className="font-mono text-[0.78rem] font-medium text-fg-subtle tabular-nums">
+                  0{index + 1}
+                </span>
+
+                <div className="min-w-0">
+                  <h3 className="text-[1.15rem] font-bold sm:text-[1.3rem]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1.5 max-w-[58ch] text-[0.9rem] leading-relaxed text-fg-muted">
                     {item.blurb}
                   </p>
-                  <p className="mt-5 flex items-center gap-1.5 text-[0.8rem] font-semibold text-brand-purple">
-                    See skills
-                    <ArrowSpan />
-                  </p>
-                </Card>
+                </div>
+
+                <span className="col-start-2 hidden items-center gap-1.5 self-center text-[0.8rem] font-semibold text-fg-subtle transition-colors duration-300 group-hover:text-brand-purple sm:col-start-3 sm:flex">
+                  See skills
+                  <ArrowSpan />
+                </span>
               </Link>
             </RevealItem>
           ))}
         </RevealGroup>
-
-        <GradientDivider className="mt-16" />
       </div>
     </Section>
   );

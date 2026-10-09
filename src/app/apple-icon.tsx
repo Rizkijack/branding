@@ -42,7 +42,7 @@ export default function AppleIcon() {
             height: 0,
             borderLeft: "52px solid transparent",
             borderRight: "52px solid transparent",
-            borderTop: "48px solid #f472b6",
+            borderTop: "48px solid #b98fd6",
           }}
         />
       </div>

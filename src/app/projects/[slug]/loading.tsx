@@ -23,7 +23,7 @@ export default function ProjectDetailLoading() {
           {Array.from({ length: 4 }, (_, i) => (
             <div
               key={i}
-              className="flex items-start gap-3 rounded-xl2 border border-line/70 bg-surface/60 p-4"
+              className="flex items-start gap-3 rounded-xl2 border border-line/70 bg-surface-2 p-4"
             >
               <Skeleton className="size-5 shrink-0 rounded-full" />
               <SkeletonText lines={2} className="flex-1" />

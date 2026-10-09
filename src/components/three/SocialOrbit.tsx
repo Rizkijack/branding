@@ -76,8 +76,8 @@ const WOBBLE = 0.25;
  */
 const PLATFORM_COLORS: Record<string, string> = {
   github: "#8a5cf6",
-  x: "#627eea",
-  website: "#f472b6",
+  x: "#6366d9",
+  website: "#b98fd6",
 };
 
 const FALLBACK_COLOR = "#8a5cf6";
@@ -264,7 +264,7 @@ function SocialOrbitScene({ socials }: { socials: readonly ProfileLink[] }) {
       <directionalLight
         position={[-5, -3, 2]}
         intensity={0.5}
-        color="#8b9ff5"
+        color="#8b8ff2"
       />
       <ambientLight intensity={0.35} />
 

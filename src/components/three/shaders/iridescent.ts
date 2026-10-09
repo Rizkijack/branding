@@ -16,10 +16,14 @@
  *   2. The colour depends on the *thickness* of the film.
  *
  * So the shader computes a view-dependent term and a thickness term, mixes them
- * into a hue, and samples a four-stop brand ramp (purple → blue → pink →
- * orange) at that hue. The result is genuinely view-dependent — rotate the
+ * into a hue, and samples a four-stop brand ramp (violet → indigo → mauve →
+ * gold) at that hue. The result is genuinely view-dependent — rotate the
  * camera or the mesh and the gradient slides across the facets, which a baked
  * texture can never do.
+ *
+ * The ramp colours come from the CSS `--brand-*` tokens via `readPalette`, so
+ * the whole scene re-tints with the design system. The family is deliberately
+ * narrow — amethyst set in gold — rather than a full-hue rainbow.
  *
  * The "animated" part is the thickness term drifting with `uTime`, giving a
  * slow oil-slick shimmer without any texture fetch.

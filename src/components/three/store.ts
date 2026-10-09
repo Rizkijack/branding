@@ -111,18 +111,21 @@ export interface ThreeState {
 
 /**
  * Neutral palette used before the CSS probe runs (and during SSR).
- * Values mirror the light theme in `globals.css` so the first frame — if it is
- * ever visible — is not a jarring mismatch.
+ * Values mirror the light theme in `globals.css` so the first frame - if it is
+ * ever visible - is not a jarring mismatch.
+ *
+ * Kept in lockstep with `globals.css`: an analogous violet family plus a warm
+ * gold highlight, never a saturated rainbow.
  */
 export const DEFAULT_PALETTE: ThreePalette = {
   purple: "#8a5cf6",
-  blue: "#627eea",
+  blue: "#6366d9",
   indigo: "#5b4ce0",
-  pink: "#f472b6",
-  orange: "#ff9f5a",
-  amber: "#f7c948",
+  pink: "#b98fd6",
+  orange: "#e0a24a",
+  amber: "#e8b455",
   teal: "#16a6a1",
-  background: "#f8f7ff",
+  background: "#f7f7f9",
   foreground: "#1c1c1c",
   dpr: 1,
 };

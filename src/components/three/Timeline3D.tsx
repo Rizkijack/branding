@@ -81,9 +81,9 @@ const SPIN_SPEED = 0.4;
  *   milestone → --brand-pink
  */
 const KIND_COLORS: Record<TimelineEntry["kind"], string> = {
-  education: "#627eea",
+  education: "#6366d9",
   experience: "#8a5cf6",
-  milestone: "#f472b6",
+  milestone: "#b98fd6",
 };
 
 /* ------------------------------------------------------------------------- *
@@ -271,7 +271,7 @@ function TimelineScene({ entries }: { entries: readonly TimelineEntry[] }) {
       <directionalLight
         position={[-5, -3, 2]}
         intensity={0.5}
-        color="#8b9ff5"
+        color="#8b8ff2"
       />
       <ambientLight intensity={0.35} />
 

@@ -204,16 +204,7 @@ export default async function PostPage({ params }: PostPageProps) {
           className="container-page pb-24 sm:pb-32"
         >
           <div className="mb-10 flex flex-col items-center gap-3">
-            <SectionHeading
-              eyebrow="Keep reading"
-              title="More posts"
-              titleNode={
-                <>
-                  More <span className="text-gradient">posts</span>
-                </>
-              }
-              id="more-posts-heading"
-            />
+            <SectionHeading title="More posts" id="more-posts-heading" />
             <p className="max-w-xl text-center text-[0.95rem] text-fg-muted">
               Roughly {morePosts.reduce((total, p) => total + p.readingTime, 0)}{" "}
               minutes of reading, if you have them.

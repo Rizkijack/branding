@@ -18,7 +18,6 @@ import { MeshBackground } from "@/components/motion/MeshBackground";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
 import {
   Eyebrow,
-  GradientDivider,
   GradientText,
   Lede,
   Section,
@@ -81,10 +80,7 @@ export default function ProjectsPage() {
             <Eyebrow>Selected work</Eyebrow>
 
             <h1 className="text-[clamp(2.4rem,1.4rem+4.4vw,4.2rem)] leading-[1.05] font-bold">
-              Things I&apos;ve{" "}
-              <GradientText animate className="text-gradient">
-                actually shipped
-              </GradientText>
+              Things I&apos;ve <GradientText>actually shipped</GradientText>
             </h1>
 
             <Lede className="mx-auto max-w-2xl text-center">
@@ -119,12 +115,18 @@ export default function ProjectsPage() {
       {/* -------------------------------------------------------------------
           Index
           ------------------------------------------------------------------- */}
-      <Section className="pb-24 sm:pb-32">
+      <Section
+        className="pb-24 sm:pb-32"
+        aria-labelledby="projects-index-heading"
+      >
         <div className="container-page">
-          <GradientDivider />
-
-          <header className="mt-14 flex flex-col gap-3">
-            <Eyebrow as="h2">The index</Eyebrow>
+          <header className="flex flex-col gap-3">
+            {/* Visible label removed - the filter bar and cards are obviously an
+                index. The heading stays in the a11y tree so the landmark is
+                still named for assistive tech. */}
+            <h2 id="projects-index-heading" className="sr-only">
+              Project index
+            </h2>
             <p className="max-w-2xl text-[0.95rem] text-fg-muted">
               {projects.length} projects · filtered by whatever you actually
               need.

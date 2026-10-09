@@ -199,29 +199,30 @@ export function AnimatedDiamond({
               {description ? <desc>{description}</desc> : null}
 
               <defs>
-                {/* Six faceted fills, warm-to-cool across the octahedron. */}
+                {/* Six faceted fills, all inside the violet family so the gem
+                    reads as amethyst rather than as a rainbow. */}
                 <linearGradient id="d-top-left" x1="0" y1="0" x2="1" y2="1">
                   <stop offset="0%" stopColor="#c4b5fd" />
                   <stop offset="100%" stopColor="#8a5cf6" />
                 </linearGradient>
                 <linearGradient id="d-top-mid" x1="0.5" y1="0" x2="0.5" y2="1">
                   <stop offset="0%" stopColor="#a78bfa" />
-                  <stop offset="100%" stopColor="#627eea" />
+                  <stop offset="100%" stopColor="#6366d9" />
                 </linearGradient>
                 <linearGradient id="d-top-right" x1="1" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#627eea" />
-                  <stop offset="100%" stopColor="#8b9ff5" />
+                  <stop offset="0%" stopColor="#6366d9" />
+                  <stop offset="100%" stopColor="#8b8ff2" />
                 </linearGradient>
                 <linearGradient id="d-bot-left" x1="0" y1="1" x2="1" y2="0">
                   <stop offset="0%" stopColor="#5b4ce0" />
-                  <stop offset="100%" stopColor="#627eea" />
+                  <stop offset="100%" stopColor="#6366d9" />
                 </linearGradient>
                 <linearGradient id="d-bot-mid" x1="0.5" y1="1" x2="0.5" y2="0">
                   <stop offset="0%" stopColor="#7c6ff0" />
-                  <stop offset="100%" stopColor="#8b9ff5" />
+                  <stop offset="100%" stopColor="#8b8ff2" />
                 </linearGradient>
                 <linearGradient id="d-bot-right" x1="1" y1="1" x2="0" y2="0">
-                  <stop offset="0%" stopColor="#f472b6" />
+                  <stop offset="0%" stopColor="#b98fd6" />
                   <stop offset="100%" stopColor="#a78bfa" />
                 </linearGradient>
 

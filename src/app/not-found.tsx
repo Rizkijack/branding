@@ -55,7 +55,7 @@ export default function NotFound() {
             aria-hidden="true"
             className="font-display text-[clamp(4.5rem,3rem+11vw,9rem)] leading-[0.9] font-bold tracking-tighter"
           >
-            <GradientText animate>404</GradientText>
+            <GradientText>404</GradientText>
           </p>
 
           <h1 className="max-w-xl text-[clamp(1.6rem,1.15rem+2.2vw,2.6rem)] leading-[1.12] font-bold">
@@ -89,7 +89,7 @@ export default function NotFound() {
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="group flex items-center justify-between gap-3 rounded-xl2 border border-line bg-surface/60 px-4 py-3 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-purple/50 hover:shadow-md"
+                    className="group flex items-center justify-between gap-3 rounded-xl2 border border-line bg-surface px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-purple/50 hover:shadow-md"
                   >
                     <span className="flex min-w-0 flex-col">
                       <span className="text-[0.88rem] font-semibold text-fg">

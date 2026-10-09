@@ -135,7 +135,7 @@ export function ProjectGrid({ projects, tags }: ProjectGridProps) {
           </AnimatePresence>
         </motion.ul>
       ) : (
-        <div className="mt-10 flex flex-col items-start gap-4 rounded-card border border-dashed border-line-strong bg-surface/50 p-8 sm:p-10">
+        <div className="mt-10 flex flex-col items-start gap-4 rounded-card border border-dashed border-line-strong bg-surface-2 p-8 sm:p-10">
           <p className="text-[1.05rem] font-semibold text-fg">
             No projects tagged {activeTag}
           </p>

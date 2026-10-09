@@ -99,10 +99,12 @@ export function HeroDiamond({
   const handle = useMemo(
     () =>
       createIridescentMaterial({
+        // First-frame values; the palette effect re-tints from the CSS tokens
+        // on mount and on every theme flip. Amethyst set in gold, not a rainbow.
         colorA: "#8a5cf6",
-        colorB: "#627eea",
-        colorC: "#f472b6",
-        colorD: "#ff9f5a",
+        colorB: "#6366d9",
+        colorC: "#b98fd6",
+        colorD: "#e0a24a",
         timeScale: 1,
         saturation: 1.15,
         viewStrength: 0.75,

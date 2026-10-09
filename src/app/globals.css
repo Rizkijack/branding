@@ -10,46 +10,55 @@
    ========================================================================== */
 
 :root {
-  /* Surfaces */
-  --bg: #f8f7ff;
+  /* Surfaces — neutral cool. The lavender tint is gone: hue now comes from the
+     single violet accent, not from the background. */
+  --bg: #f7f7f9;
   --bg-elevated: #ffffff;
   --surface: #ffffff;
-  --surface-2: #f2f0fb;
-  --surface-3: #e9e6f8;
+  --surface-2: #f1f1f4;
+  --surface-3: #e7e7ec;
 
   /* Text — contrast-checked against --bg (light) */
-  --fg: #1c1c1c; /* 15.8:1 on --bg */
-  --fg-muted: #565473; /* 6.4:1  on --bg */
-  --fg-subtle: #6f6c8a; /* 4.6:1  on --bg */
+  --fg: #1c1c1c; /* 15.5:1 on --bg */
+  --fg-muted: #56565f; /* 6.5:1  on --bg */
+  --fg-subtle: #71717b; /* 4.9:1  on --bg */
 
   /* Lines & rings */
-  --line: #e3dff5;
-  --line-strong: #cfc7ee;
+  --line: #e5e5ea;
+  --line-strong: #cfcfd7;
   --ring: #8a5cf6;
 
-  /* Iridescent brand palette */
-  --brand-purple: #8a5cf6;
-  --brand-blue: #627eea;
-  --brand-indigo: #5b4ce0;
-  --brand-pink: #f472b6;
-  --brand-orange: #ff9f5a;
-  --brand-amber: #f7c948;
-  --brand-teal: #16a6a1;
+  /* Brand palette — restrained violet.
 
-  /* Gradient stop ramps (shared by text/borders/glows) */
-  --grad-hero: linear-gradient(
-    100deg,
-    #8a5cf6 0%,
-    #627eea 34%,
-    #f472b6 66%,
-    #ff9f5a 100%
-  );
-  --grad-soft: linear-gradient(100deg, #8a5cf6 0%, #627eea 50%, #16a6a1 100%);
-  --grad-surface: linear-gradient(
-    180deg,
-    rgb(255 255 255 / 0.92) 0%,
-    rgb(255 255 255 / 0.72) 100%
-  );
+     One accent does the work: --brand-purple. The rest of this scale is a
+     tight analogous family (violet -> indigo -> blue) used only by the 3D
+     gemstone shader, plus two SEMANTIC status colours (amber = in progress,
+     teal = live) that carry real meaning and nothing else.
+
+     The previous palette was a saturated four-hue rainbow
+     (violet/cornflower/hot-pink/tangerine) applied to every surface. That
+     multi-stop rainbow is the single loudest "generated" signal on the site,
+     so it is gone. What replaces it reads as amethyst set in gold: a cool
+     violet gem with one warm specular hint. */
+  --brand-purple: #8a5cf6; /* the accent */
+  --brand-blue: #6366d9; /* indigo-blue, analogous */
+  --brand-indigo: #5b4ce0; /* indigo */
+  --brand-pink: #b98fd6; /* light violet-mauve, NOT hot pink */
+  --brand-orange: #e0a24a; /* muted gold — gemstone highlight, not tangerine */
+  --brand-amber: #e8b455; /* semantic: "in progress" status only */
+  --brand-teal: #16a6a1; /* semantic: "live" status only */
+
+  /* Gradient stop ramps.
+
+     Deliberately NOT a rainbow: a two-stop ramp inside one hue family, which
+     reads as "a violet lit from one side" rather than "a spectrum". Used by
+     the primary CTA, the route progress bar and gradient text.
+
+     Both stops are held dark enough that white button text clears WCAG AA
+     (>= 4.5:1) across the whole ramp — the old rainbow ended on hot pink and
+     tangerine, where white text fell to roughly 2.5:1. */
+  --grad-hero: linear-gradient(140deg, #7a52e4 0%, #6340c8 100%);
+  --grad-soft: linear-gradient(100deg, #7a52e4 0%, #6340c8 100%);
 
   /* Shadows */
   --shadow-sm: 0 1px 2px rgb(28 28 28 / 0.05), 0 2px 6px rgb(28 28 28 / 0.04);
@@ -57,8 +66,10 @@
     0 6px 16px rgb(28 28 28 / 0.06), 0 12px 32px rgb(28 28 28 / 0.06);
   --shadow-lg:
     0 12px 28px rgb(28 28 28 / 0.08), 0 28px 64px rgb(28 28 28 / 0.1);
+  /* Elevation glow. Was a violet bloom that made every hover feel like a
+     neon sign; now a neutral lift with only a whisper of the accent ring. */
   --shadow-glow:
-    0 0 0 1px rgb(138 92 246 / 0.18), 0 18px 60px -12px rgb(138 92 246 / 0.45);
+    0 0 0 1px rgb(138 92 246 / 0.12), 0 18px 44px -16px rgb(28 28 28 / 0.22);
 
   /* Layout */
   --nav-h: 4rem;
@@ -82,24 +93,24 @@
   --ring: #a78bfa;
 
   --brand-purple: #a78bfa;
-  --brand-blue: #8b9ff5;
+  --brand-blue: #8b8ff2;
   --brand-indigo: #8b7cf0;
-  --brand-pink: #f9a8d4;
-  --brand-orange: #ffb47f;
-  --brand-amber: #ffd97a;
+  --brand-pink: #cfb0e8;
+  --brand-orange: #e8c07a;
+  --brand-amber: #f0c878;
   --brand-teal: #4dd4c9;
 
-  --grad-surface: linear-gradient(
-    180deg,
-    rgb(24 24 40 / 0.92) 0%,
-    rgb(16 16 28 / 0.72) 100%
-  );
+  /* Dark-theme ramp is shifted a little lighter than light's so it stays
+     visible on near-black, but is still held under the AA ceiling for white
+     text. */
+  --grad-hero: linear-gradient(140deg, #8252e8 0%, #6340c8 100%);
+  --grad-soft: linear-gradient(100deg, #8252e8 0%, #6340c8 100%);
 
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5), 0 2px 6px rgb(0 0 0 / 0.35);
   --shadow-md: 0 6px 16px rgb(0 0 0 / 0.45), 0 12px 32px rgb(0 0 0 / 0.4);
   --shadow-lg: 0 12px 28px rgb(0 0 0 / 0.5), 0 28px 64px rgb(0 0 0 / 0.55);
   --shadow-glow:
-    0 0 0 1px rgb(167 139 250 / 0.25), 0 18px 60px -12px rgb(138 92 246 / 0.5);
+    0 0 0 1px rgb(167 139 250 / 0.2), 0 18px 44px -16px rgb(0 0 0 / 0.6);
 }
 
 /* ==========================================================================
@@ -318,7 +329,11 @@
   color: transparent;
 }
 
-/* 1px iridescent border via double background (no layout shift, no extra DOM) */
+/* 1px accent rim via double background (no layout shift, no extra DOM).
+
+   Was an iridescent rainbow rim baked into every card in the site, which is
+   the classic glassmorphism-gone-wrong tell. It is now a single neutral
+   hairline that brightens on hover, so surfaces read as paper, not as glass. */
 @utility border-gradient {
   position: relative;
   isolation: isolate;
@@ -329,7 +344,7 @@
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: var(--grad-hero);
+  background: var(--line-strong);
   /* Punch the middle out so only the 1px rim shows */
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -339,28 +354,24 @@
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   mask-composite: exclude;
-  opacity: 0.42;
+  opacity: 0.5;
   transition: opacity 0.35s ease;
   pointer-events: none;
   z-index: -1;
 }
 
-/* Shared glassy card surface */
-@utility glass {
-  background-image: var(--grad-surface);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
+/* Shared card surface. Removed: this site no longer uses a translucent blurred
+ * fill on its cards (see <Card>). Kept as a note rather than a utility so
+ * nobody reintroduces it by accident. */
 
-/* Animated hairline divider */
+/* Hairline divider. Was a three-colour spectrum; one hue now, fading in and
+   out — an underline, not a rainbow. */
 @utility divider-gradient {
   height: 1px;
   background-image: linear-gradient(
     90deg,
     transparent,
-    color-mix(in oklab, var(--brand-purple) 55%, transparent),
-    color-mix(in oklab, var(--brand-blue) 55%, transparent),
-    color-mix(in oklab, var(--brand-pink) 45%, transparent),
+    color-mix(in oklab, var(--brand-purple) 50%, transparent),
     transparent
   );
 }

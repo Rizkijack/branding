@@ -132,7 +132,7 @@ export function ParticleField({
       uDrift: { value: drift },
       uOpacity: { value: opacity },
       uColorA: { value: new THREE.Color("#8a5cf6") },
-      uColorB: { value: new THREE.Color("#627eea") },
+      uColorB: { value: new THREE.Color("#6366d9") },
     }),
     [size, drift, opacity],
   );
